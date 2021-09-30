@@ -128,6 +128,13 @@ enum ExitCode {
 }
 
 fn run_add(number: u64, flags: AddFlags) {
+    if let Err(e) = add_metadata(number, flags) {
+        eprintln!("Error: {:?}", e);
+        process::exit(ExitCode::Other as i32);
+    }
+}
+
+fn add_metadata(number: u64, flags: AddFlags) -> Result<()> {
     // TODO check doesn't already exist
 
     let mut metadata = RfcMetadata::new(number, flags.filename, flags.start_date);
@@ -141,10 +148,7 @@ fn run_add(number: u64, flags: AddFlags) {
     }
     metadata.title = flags.title;
 
-    if let Err(e) = save_metadata(&metadata) {
-        eprintln!("Error: {:?}", e);
-        process::exit(ExitCode::Other as i32);
-    }
+    save_metadata(&metadata)
 }
 
 fn parse_multiple(input: &str) -> Vec<String> {
@@ -170,7 +174,9 @@ fn parse_multiple(input: &str) -> Vec<String> {
     issues
 }
 
-fn run_set(number: u64, flags: SetFlags) {}
+fn run_set(number: u64, flags: SetFlags) {
+    // TODO
+}
 
 fn run_get(number: u64, verbose: bool, flags: GetFlags) {
     let metadata = match open_metadata(number) {
