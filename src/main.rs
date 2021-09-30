@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read};
+use std::{fs::File, io::{self, Read}, process};
 
 use serde::{Deserialize, Serialize};
 use structopt::StructOpt;
@@ -44,6 +44,7 @@ enum Team {
     Tools,
 }
 
+// TODO docs
 #[derive(StructOpt)]
 enum Command {
     Add {
@@ -96,25 +97,64 @@ fn main() {
             verbose,
             filename,
             start_date,
-        } => run_get(number, filename, start_date, verbose).unwrap(),
+        } => run_get(number, verbose, filename, start_date),
         _ => {}
     }
 }
 
+// TODO Display impl
 #[derive(Debug)]
-enum Error {}
+enum Error {
+    Serialization,
+    FileNotFound,
+    Io,
+}
 
+impl From<serde_json::Error> for Error {
+    fn from(_: serde_json::Error) -> Error {
+        Error::Serialization
+    }
+}
+
+impl From<io::Error> for Error {
+    fn from(e: io::Error) -> Error {
+        match e.kind() {
+            io::ErrorKind::NotFound => Error::FileNotFound,
+            _ => Error::Io,
+        }
+    }
+}
 type Result<T> = std::result::Result<T, Error>;
 
 fn metadata_filename(number: u64) -> String {
     format!("metadata/{:0>4}.json", number)
 }
 
-fn run_get(number: u64, filename: bool, start_date: bool, verbose: bool) -> Result<()> {
-    let mut file = File::open(metadata_filename(number)).unwrap();
+#[derive(Debug, Copy, Clone)]
+enum ExitCode {
+    Other = 1,
+    MissingMetadata = 2,
+}
+
+fn open_metadata(number: u64) -> Result<RfcMetadata> {
+    let mut file = File::open(metadata_filename(number))?;
     let mut serialized = String::new();
-    file.read_to_string(&mut serialized).unwrap();
-    let metadata: RfcMetadata = serde_json::from_str(&serialized).unwrap();
+    file.read_to_string(&mut serialized)?;
+    Ok(serde_json::from_str(&serialized)?)
+}
+
+fn run_get(number: u64, verbose: bool, filename: bool, start_date: bool) {
+    let metadata = match open_metadata(number) {
+        Ok(m) => m,
+        Err(Error::FileNotFound) => {
+            eprintln!("RFC {} does not have metadata", number);
+            process::exit(ExitCode::MissingMetadata as i32);
+        }
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+    };
 
     // Print a single field of metadata
     macro_rules! render {
@@ -131,6 +171,4 @@ fn run_get(number: u64, filename: bool, start_date: bool, verbose: bool) -> Resu
 
     render!(filename);
     render!(start_date);
-
-    Ok(())
 }
