@@ -1,15 +1,5 @@
-use crate::{errors::Error, metadata::open_metadata};
-use std::process;
-use structopt::StructOpt;
-
-mod errors;
-mod github;
-mod metadata;
-
 // TODO
 // CLI
-//   add/edit/delete metadata
-//   get status - exists, merged, get a value
 //   add/remove tag
 //   scan metadata for new
 //   update from scan
@@ -20,14 +10,28 @@ mod metadata;
 //     date formats
 //     subcommands - check for missing title, tags
 //   generate website (handlebars)
+
+use crate::{
+    errors::Error,
+    metadata::{delete_metadata, open_metadata},
+};
+use std::process;
+use structopt::StructOpt;
+
+mod errors;
+mod github;
+mod metadata;
+
 fn main() {
     match Command::from_args() {
+        Command::Add { number, flags } => run_add(number, flags),
+        Command::Set { number, flags } => run_set(number, flags),
         Command::Get {
             number,
             verbose,
             flags,
         } => run_get(number, verbose, flags),
-        _ => todo!(),
+        Command::Delete { number } => run_delete(number),
     }
 }
 
@@ -123,6 +127,10 @@ enum ExitCode {
     MissingMetadata = 2,
 }
 
+fn run_add(number: u64, flags: AddFlags) {}
+
+fn run_set(number: u64, flags: SetFlags) {}
+
 fn run_get(number: u64, verbose: bool, flags: GetFlags) {
     let metadata = match open_metadata(number) {
         Ok(m) => m,
@@ -202,4 +210,18 @@ fn run_get(number: u64, verbose: bool, flags: GetFlags) {
     render_vec!(issues);
     render_opt!(title);
     render_vec!(tags);
+}
+
+fn run_delete(number: u64) {
+    match delete_metadata(number) {
+        Err(Error::FileNotFound) => {
+            eprintln!("RFC {} does not have metadata", number);
+            process::exit(ExitCode::MissingMetadata as i32);
+        }
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+        _ => {}
+    }
 }

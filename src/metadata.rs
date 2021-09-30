@@ -1,6 +1,9 @@
 use crate::errors::{Error, Result};
 use serde::{Deserialize, Serialize};
-use std::{fs::File, io::Read};
+use std::{
+    fs::{self, File},
+    io::Read,
+};
 
 const METADATA_VERSION: u64 = 1;
 
@@ -56,4 +59,9 @@ pub fn open_metadata(number: u64) -> Result<RfcMetadata> {
     } else {
         Ok(result)
     }
+}
+
+pub fn delete_metadata(number: u64) -> Result<()> {
+    fs::remove_file(metadata_filename(number))?;
+    Ok(())
 }
