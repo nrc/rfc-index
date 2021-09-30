@@ -13,7 +13,7 @@
 
 use crate::{
     errors::Error,
-    metadata::{delete_metadata, open_metadata},
+    metadata::{delete_metadata, open_metadata, save_metadata, RfcMetadata},
 };
 use std::process;
 use structopt::StructOpt;
@@ -127,7 +127,48 @@ enum ExitCode {
     MissingMetadata = 2,
 }
 
-fn run_add(number: u64, flags: AddFlags) {}
+fn run_add(number: u64, flags: AddFlags) {
+    // TODO check doesn't already exist
+
+    let mut metadata = RfcMetadata::new(number, flags.filename, flags.start_date);
+
+    metadata.merge_date = flags.merge_date;
+    if let Some(s) = flags.feature_name {
+        metadata.feature_name = parse_multiple(&s);
+    }
+    if let Some(s) = flags.issues {
+        metadata.issues = parse_multiple(&s);
+    }
+    metadata.title = flags.title;
+
+    if let Err(e) = save_metadata(&metadata) {
+        eprintln!("Error: {:?}", e);
+        process::exit(ExitCode::Other as i32);
+    }
+}
+
+fn parse_multiple(input: &str) -> Vec<String> {
+    let mut issues = Vec::new();
+    let mut buf = String::new();
+    for c in input.chars() {
+        if c == ' ' || c == '\n' || c == '\r' || c == ',' || c == ';' || &buf == "and" {
+            if !buf.is_empty() {
+                if buf != "and" {
+                    issues.push(buf);
+                }
+                buf = String::new();
+            }
+        } else {
+            buf.push(c)
+        }
+    }
+
+    if !buf.is_empty() && buf != "and" {
+        issues.push(buf);
+    }
+
+    issues
+}
 
 fn run_set(number: u64, flags: SetFlags) {}
 
@@ -223,5 +264,37 @@ fn run_delete(number: u64) {
             process::exit(ExitCode::Other as i32);
         }
         _ => {}
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn parse_multiple_() {
+        assert_eq!(parse_multiple(""), Vec::<String>::new());
+        assert_eq!(parse_multiple(" "), Vec::<String>::new());
+        assert_eq!(parse_multiple(", ,, and    , "), Vec::<String>::new());
+        assert_eq!(
+            parse_multiple("foo bar"),
+            vec!["foo".to_owned(), "bar".to_owned()]
+        );
+        assert_eq!(
+            parse_multiple("foo, bar"),
+            vec!["foo".to_owned(), "bar".to_owned()]
+        );
+        assert_eq!(
+            parse_multiple("foo;bar"),
+            vec!["foo".to_owned(), "bar".to_owned()]
+        );
+        assert_eq!(
+            parse_multiple("foo and bar"),
+            vec!["foo".to_owned(), "bar".to_owned()]
+        );
+        assert_eq!(
+            parse_multiple("foo, bar, and baz;"),
+            vec!["foo".to_owned(), "bar".to_owned(), "baz".to_owned()]
+        );
     }
 }

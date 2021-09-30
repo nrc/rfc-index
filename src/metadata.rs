@@ -2,7 +2,7 @@ use crate::errors::{Error, Result};
 use serde::{Deserialize, Serialize};
 use std::{
     fs::{self, File},
-    io::Read,
+    io::{Read, Write},
 };
 
 const METADATA_VERSION: u64 = 1;
@@ -18,6 +18,22 @@ pub struct RfcMetadata {
     pub issues: Vec<String>,
     pub title: Option<String>,
     pub tags: Vec<Tag>,
+}
+
+impl RfcMetadata {
+    pub fn new(number: u64, filename: String, start_date: String) -> RfcMetadata {
+        RfcMetadata {
+            version: METADATA_VERSION,
+            number,
+            filename,
+            start_date,
+            merge_date: None,
+            feature_name: Vec::new(),
+            issues: Vec::new(),
+            title: None,
+            tags: Vec::new(),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -46,6 +62,13 @@ pub enum Team {
 
 fn metadata_filename(number: u64) -> String {
     format!("metadata/{:0>4}.json", number)
+}
+
+pub fn save_metadata(metadata: &RfcMetadata) -> Result<()> {
+    let serialized = serde_json::to_string(metadata)?;
+    let mut file = File::create(metadata_filename(metadata.number))?;
+    file.write_all(serialized.as_bytes())?;
+    Ok(())
 }
 
 pub fn open_metadata(number: u64) -> Result<RfcMetadata> {
