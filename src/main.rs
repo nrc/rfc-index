@@ -25,43 +25,96 @@ fn main() {
         Command::Get {
             number,
             verbose,
-            filename,
-            start_date,
-        } => run_get(number, verbose, filename, start_date),
-        _ => {}
+            flags,
+        } => run_get(number, verbose, flags),
+        _ => todo!(),
     }
 }
 
-// TODO docs
+/// A utility for building the RFC index website and maintaining its metadata.
 #[derive(StructOpt)]
 enum Command {
+    /// Add new metadata for an RFC.
     Add {
+        /// Identify the RFC by number.
         number: u64,
-        filename: String,
-        start_date: String,
-        // TODO other fields
+        #[structopt(flatten)]
+        flags: AddFlags,
     },
+    /// Update metadata for an RFC.
     Set {
+        /// Identify the RFC by number.
         number: u64,
-        #[structopt(short, long)]
-        filename: Option<String>,
-        #[structopt(long)]
-        start_date: Option<String>,
-        // TODO other fields
+        #[structopt(flatten)]
+        flags: SetFlags,
     },
+    /// Query the metadata of an RFC.
     Get {
+        /// Identify the RFC by number.
         number: u64,
+        /// Verbose output specifies the field and is escaped. Non-verbose prints only the queried value.
         #[structopt(short, long)]
         verbose: bool,
-        #[structopt(short, long)]
-        filename: bool,
-        #[structopt(long)]
-        start_date: bool,
-        // TODO other fields
+        #[structopt(flatten)]
+        flags: GetFlags,
     },
+    /// Delete the metadata of an RFC.
     Delete {
+        /// Identify the RFC by number.
         number: u64,
     },
+}
+
+#[derive(StructOpt)]
+struct AddFlags {
+    #[structopt(short, long)]
+    filename: String,
+    #[structopt(long)]
+    start_date: String,
+    #[structopt(long)]
+    merge_date: Option<String>,
+    #[structopt(long)]
+    feature_name: Option<String>,
+    #[structopt(long)]
+    issues: Option<String>,
+    #[structopt(short, long)]
+    title: Option<String>,
+    // TODO tags
+}
+
+#[derive(StructOpt)]
+struct SetFlags {
+    #[structopt(short, long)]
+    filename: Option<String>,
+    #[structopt(long)]
+    start_date: Option<String>,
+    #[structopt(long)]
+    merge_date: Option<String>,
+    #[structopt(long)]
+    feature_name: Option<String>,
+    #[structopt(long)]
+    issues: Option<String>,
+    #[structopt(short, long)]
+    title: Option<String>,
+    // TODO tags
+}
+
+#[derive(StructOpt)]
+struct GetFlags {
+    #[structopt(short, long)]
+    filename: bool,
+    #[structopt(long)]
+    start_date: bool,
+    #[structopt(long)]
+    merge_date: bool,
+    #[structopt(long)]
+    feature_name: bool,
+    #[structopt(long)]
+    issues: bool,
+    #[structopt(short, long)]
+    title: bool,
+    #[structopt(long)]
+    tags: bool,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -70,7 +123,7 @@ enum ExitCode {
     MissingMetadata = 2,
 }
 
-fn run_get(number: u64, verbose: bool, filename: bool, start_date: bool) {
+fn run_get(number: u64, verbose: bool, flags: GetFlags) {
     let metadata = match open_metadata(number) {
         Ok(m) => m,
         Err(Error::FileNotFound) => {
@@ -86,16 +139,67 @@ fn run_get(number: u64, verbose: bool, filename: bool, start_date: bool) {
     // Print a single field of metadata
     macro_rules! render {
         ($field: ident) => {
-            if $field {
+            if flags.$field {
                 if verbose {
                     println!("{}: {:?}", stringify!($field), metadata.$field);
                 } else {
-                    println!("{}", metadata.$field)
+                    println!("{}", metadata.$field);
                 }
+            }
+        };
+    }
+    macro_rules! render_opt {
+        ($field: ident) => {
+            if flags.$field {
+                match metadata.$field {
+                    Some(f) => {
+                        if verbose {
+                            println!("{}: {:?}", stringify!($field), f);
+                        } else {
+                            println!("{}", f);
+                        }
+                    }
+                    None => {
+                        if verbose {
+                            println!("{}:", stringify!($field));
+                        }
+                    }
+                }
+            }
+        };
+    }
+    macro_rules! render_vec {
+        ($field: ident) => {
+            if flags.$field {
+                let iter = metadata
+                    .$field
+                    .iter()
+                    .map(|i| {
+                        if verbose {
+                            // TODO impl Display for Tag and use {}
+                            format!("{:?}", i)
+                        } else {
+                            format!("{:?}", i)
+                        }
+                    })
+                    .intersperse(", ".to_owned());
+
+                if verbose {
+                    print!("{}: [", stringify!($field));
+                } else {
+                    print!("[");
+                }
+                iter.for_each(|s| print!("{}", s));
+                println!("]");
             }
         };
     }
 
     render!(filename);
     render!(start_date);
+    render_opt!(merge_date);
+    render_vec!(feature_name);
+    render_vec!(issues);
+    render_opt!(title);
+    render_vec!(tags);
 }
