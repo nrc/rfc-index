@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     fs::{self, File},
     io::{Read, Write},
+    path::Path,
 };
 
 const METADATA_VERSION: u64 = 1;
@@ -87,4 +88,11 @@ pub fn open_metadata(number: u64) -> Result<RfcMetadata> {
 pub fn delete_metadata(number: u64) -> Result<()> {
     fs::remove_file(metadata_filename(number))?;
     Ok(())
+}
+
+pub fn metadata_exists(number: u64) -> Result<()> {
+    Path::new(&metadata_filename(number))
+        .exists()
+        .then(|| ())
+        .ok_or(Error::FileNotFound)
 }

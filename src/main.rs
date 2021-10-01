@@ -12,8 +12,8 @@
 //   generate website (handlebars)
 
 use crate::{
-    errors::Error,
-    metadata::{delete_metadata, open_metadata, save_metadata, RfcMetadata},
+    errors::{Error, Result},
+    metadata::{delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata},
 };
 use std::process;
 use structopt::StructOpt;
@@ -24,7 +24,11 @@ mod metadata;
 
 fn main() {
     match Command::from_args() {
-        Command::Add { number, flags } => run_add(number, flags),
+        Command::Add {
+            number,
+            force,
+            flags,
+        } => run_add(number, force, flags),
         Command::Set { number, flags } => run_set(number, flags),
         Command::Get {
             number,
@@ -42,6 +46,8 @@ enum Command {
     Add {
         /// Identify the RFC by number.
         number: u64,
+        #[structopt(long)]
+        force: bool,
         #[structopt(flatten)]
         flags: AddFlags,
     },
@@ -127,15 +133,19 @@ enum ExitCode {
     MissingMetadata = 2,
 }
 
-fn run_add(number: u64, flags: AddFlags) {
-    if let Err(e) = add_metadata(number, flags) {
+fn run_add(number: u64, force: bool, flags: AddFlags) {
+    if let Err(e) = add_metadata(number, force, flags) {
         eprintln!("Error: {:?}", e);
         process::exit(ExitCode::Other as i32);
     }
 }
 
-fn add_metadata(number: u64, flags: AddFlags) -> Result<()> {
-    // TODO check doesn't already exist
+fn add_metadata(number: u64, force: bool, flags: AddFlags) -> Result<()> {
+    if !force {
+        if let Ok(_) = metadata_exists(number) {
+            return Err(Error::MetadataAlreadyExists);
+        }
+    }
 
     let mut metadata = RfcMetadata::new(number, flags.filename, flags.start_date);
 

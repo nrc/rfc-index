@@ -7,6 +7,7 @@ pub enum Error {
     FileNotFound,
     Io,
     UnsupportedMetadataVersion(u64),
+    MetadataAlreadyExists,
 }
 
 impl From<serde_json::Error> for Error {
