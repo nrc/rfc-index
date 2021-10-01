@@ -8,6 +8,7 @@ pub enum Error {
     Io,
     UnsupportedMetadataVersion(u64),
     MetadataAlreadyExists,
+    Parse,
 }
 
 impl From<serde_json::Error> for Error {

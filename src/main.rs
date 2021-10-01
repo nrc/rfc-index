@@ -1,8 +1,10 @@
 // TODO
 // CLI
-//   add/remove tag
+//   add/remove/replace tag for multiple or single RFC
 //   scan metadata for new
 //   update from scan
+//     specific RFC
+//     update metadata as well as replace
 //   check
 //     number == filename
 //     tag typos
@@ -13,6 +15,7 @@
 
 use crate::{
     errors::{Error, Result},
+    github::get_merged_rfc_data,
     metadata::{delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata},
 };
 use std::process;
@@ -36,6 +39,18 @@ fn main() {
             flags,
         } => run_get(number, verbose, flags),
         Command::Delete { number } => run_delete(number),
+        Command::Scan {
+            open,
+            merged,
+            force,
+        } => {
+            if open {
+                run_scan_open(force);
+            }
+            if merged {
+                run_scan_merged(force);
+            }
+        }
     }
 }
 
@@ -46,6 +61,7 @@ enum Command {
     Add {
         /// Identify the RFC by number.
         number: u64,
+        /// Replace metadata if it already exists.
         #[structopt(short, long)]
         force: bool,
         #[structopt(flatten)]
@@ -73,6 +89,17 @@ enum Command {
         /// Identify the RFC by number.
         number: u64,
     },
+    Scan {
+        /// Scan open RFC PRs.
+        #[structopt(long)]
+        open: bool,
+        /// Scan merged RFCs.
+        #[structopt(long)]
+        merged: bool,
+        /// Replace existing metadata.
+        #[structopt(short, long)]
+        force: bool,
+    },
 }
 
 #[derive(StructOpt)]
@@ -81,8 +108,6 @@ struct AddFlags {
     filename: String,
     #[structopt(long)]
     start_date: String,
-    #[structopt(long)]
-    merge_date: Option<String>,
     #[structopt(long)]
     feature_name: Option<String>,
     #[structopt(long)]
@@ -99,8 +124,6 @@ struct SetFlags {
     #[structopt(long)]
     start_date: Option<String>,
     #[structopt(long)]
-    merge_date: Option<String>,
-    #[structopt(long)]
     feature_name: Option<String>,
     #[structopt(long)]
     issues: Option<String>,
@@ -115,8 +138,6 @@ struct GetFlags {
     filename: bool,
     #[structopt(long)]
     start_date: bool,
-    #[structopt(long)]
-    merge_date: bool,
     #[structopt(long)]
     feature_name: bool,
     #[structopt(long)]
@@ -149,7 +170,6 @@ fn add_metadata(number: u64, force: bool, flags: AddFlags) -> Result<()> {
 
     let mut metadata = RfcMetadata::new(number, flags.filename, flags.start_date);
 
-    metadata.merge_date = flags.merge_date;
     if let Some(s) = flags.feature_name {
         metadata.feature_name = parse_multiple(&s);
     }
@@ -162,26 +182,65 @@ fn add_metadata(number: u64, force: bool, flags: AddFlags) -> Result<()> {
 }
 
 fn parse_multiple(input: &str) -> Vec<String> {
-    let mut issues = Vec::new();
+    fn unquote(s: String) -> String {
+        if (s.starts_with('`') || s.starts_with('"') || s.starts_with('\''))
+            && s.ends_with(s.chars().next().unwrap())
+        {
+            s[1..s.len() - 1].to_owned()
+        } else {
+            s
+        }
+    }
+
+    let mut result = Vec::new();
     let mut buf = String::new();
+    let mut quoted = None;
     for c in input.chars() {
-        if c == ' ' || c == '\n' || c == '\r' || c == ',' || c == ';' || &buf == "and" {
+        if quoted.is_none()
+            && (c == ' '
+                || c == '\n'
+                || c == '\r'
+                || c == ','
+                || c == ';'
+                || c == '/'
+                || &buf == "and")
+        {
             if !buf.is_empty() {
                 if buf != "and" {
-                    issues.push(buf);
+                    result.push(unquote(buf));
                 }
                 buf = String::new();
             }
+        } else if quoted.is_none() && (c == '`' || c == '"' || c == '\'') {
+            quoted = Some(c);
+            buf.push(c);
+        } else if quoted.is_none() && c == '(' {
+            quoted = Some(')');
+            buf.push(c);
+        } else if quoted.is_none() && c == '[' {
+            quoted = Some(']');
+            buf.push(c);
         } else {
-            buf.push(c)
+            buf.push(c);
+
+            if let Some(q) = quoted {
+                if c == q {
+                    quoted = None;
+                }
+            }
         }
     }
 
     if !buf.is_empty() && buf != "and" {
-        issues.push(buf);
+        result.push(unquote(buf));
     }
 
-    issues
+    if result.len() == 1 && (result[0].to_uppercase() == "NA" || result[0].to_uppercase() == "N/A")
+    {
+        return Vec::new();
+    }
+
+    result
 }
 
 fn run_set(number: u64, flags: SetFlags) {
@@ -206,9 +265,6 @@ fn set_metadata(number: u64, flags: SetFlags) -> Result<()> {
     }
     if let Some(f) = flags.start_date {
         metadata.start_date = f;
-    }
-    if let Some(f) = flags.merge_date {
-        metadata.merge_date = Some(f);
     }
     if let Some(s) = flags.feature_name {
         metadata.feature_name = parse_multiple(&s);
@@ -297,7 +353,6 @@ fn run_get(number: u64, verbose: bool, flags: GetFlags) {
 
     render!(filename);
     render!(start_date);
-    render_opt!(merge_date);
     render_vec!(feature_name);
     render_vec!(issues);
     render_opt!(title);
@@ -318,6 +373,33 @@ fn run_delete(number: u64) {
     }
 }
 
+fn run_scan_open(force: bool) {
+    unimplemented!();
+}
+
+fn run_scan_merged(force: bool) {
+    match scan_merged(force) {
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+        _ => {}
+    }
+}
+
+fn scan_merged(force: bool) -> Result<()> {
+    let gh_data = get_merged_rfc_data()?;
+    for datum in gh_data {
+        let number = datum.number()?;
+        if force || metadata_exists(number).is_err() {
+            let metadata = datum.try_into()?;
+            save_metadata(&metadata)?;
+        }
+    }
+
+    Ok(())
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -336,6 +418,10 @@ mod test {
             vec!["foo".to_owned(), "bar".to_owned()]
         );
         assert_eq!(
+            parse_multiple("foo/bar"),
+            vec!["foo".to_owned(), "bar".to_owned()]
+        );
+        assert_eq!(
             parse_multiple("foo;bar"),
             vec!["foo".to_owned(), "bar".to_owned()]
         );
@@ -344,8 +430,21 @@ mod test {
             vec!["foo".to_owned(), "bar".to_owned()]
         );
         assert_eq!(
-            parse_multiple("foo, bar, and baz;"),
+            parse_multiple("foo, bar, and `baz`;"),
             vec!["foo".to_owned(), "bar".to_owned(), "baz".to_owned()]
+        );
+        assert_eq!(
+            parse_multiple("\"foo and bar\""),
+            vec!["foo and bar".to_owned()]
+        );
+        assert_eq!(parse_multiple("(foo/bar)"), vec!["(foo/bar)".to_owned()]);
+        assert_eq!(
+            parse_multiple(
+                "[rust-lang/rust#71249](https://github.com/rust-lang/rust/issues/71249)"
+            ),
+            vec![
+                "[rust-lang/rust#71249](https://github.com/rust-lang/rust/issues/71249)".to_owned()
+            ]
         );
     }
 }
