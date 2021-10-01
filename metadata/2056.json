@@ -1,0 +1,1 @@
+{"version":1,"number":2056,"filename":"2056-allow-trivial-where-clause-constraints.md","start_date":"2017-07-05","feature_name":["allow_trivial_constraints"],"issues":["[rust-lang/rust#48214](https://github.com/rust-lang/rust/issues/48214)"],"title":null,"tags":[]}
