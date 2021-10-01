@@ -16,7 +16,9 @@
 use crate::{
     errors::{Error, Result},
     github::get_merged_rfc_data,
-    metadata::{delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata},
+    metadata::{
+        all_metadata, delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata,
+    },
 };
 use std::process;
 use structopt::StructOpt;
@@ -51,6 +53,7 @@ fn main() {
                 run_scan_merged(force);
             }
         }
+        Command::Stats => run_stats(),
     }
 }
 
@@ -89,6 +92,7 @@ enum Command {
         /// Identify the RFC by number.
         number: u64,
     },
+    /// Scan the RFC repo for metadata.
     Scan {
         /// Scan open RFC PRs.
         #[structopt(long)]
@@ -100,6 +104,8 @@ enum Command {
         #[structopt(short, long)]
         force: bool,
     },
+    /// Emit stats about the metadata
+    Stats,
 }
 
 #[derive(StructOpt)]
@@ -398,6 +404,38 @@ fn scan_merged(force: bool) -> Result<()> {
     }
 
     Ok(())
+}
+
+fn run_stats() {
+    let metadata = match all_metadata() {
+        Ok(m) => m,
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+    };
+
+    let total = metadata.len();
+    let title = metadata.iter().filter(|m| m.title.is_some()).count();
+    let one_tag = metadata.iter().filter(|m| m.tags.len() >= 1).count();
+    let two_tags = metadata.iter().filter(|m| m.tags.len() >= 2).count();
+
+    println!("Total RFCs indexed: {}", total);
+    println!(
+        "RFCs with a title: {} ({:.1}%)",
+        title,
+        (title as f64 / total as f64) * 100.0
+    );
+    println!(
+        "RFCs with at least one tag: {} ({:.1}%)",
+        one_tag,
+        (one_tag as f64 / total as f64) * 100.0
+    );
+    println!(
+        "RFCs with at least two tags: {} ({:.1}%)",
+        two_tags,
+        (two_tags as f64 / total as f64) * 100.0
+    );
 }
 
 #[cfg(test)]
