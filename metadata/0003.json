@@ -1,1 +1,1 @@
-{"version":1,"number":3,"filename":"0003-attribute-usage.md","start_date":"2012-03-20","feature_name":[],"issues":["[rust-lang/rust#14373](https://github.com/rust-lang/rust/issues/14373)"],"title":null,"tags":[]}
+{"version":1,"number":3,"filename":"0003-attribute-usage.md","start_date":"2012-03-20","feature_name":[],"issues":["[rust-lang/rust#14373](https://github.com/rust-lang/rust/issues/14373)"],"title":"Unused attribute lint","tags":[]}

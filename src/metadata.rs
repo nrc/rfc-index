@@ -41,14 +41,23 @@ pub enum Tag {
     Team(Team),
     Topic(Topic),
     Custom(String),
+    /// Never implemented and not intended to be so.
+    Retired,
+    Superseded,
 }
 
 // TODO should be custom?
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Topic {
+    Processes,
     Traits,
     TraitObjects,
     Dsts,
+    DataTypes,
+    Attributes,
+    Generics,
+    Std,
+    Syntax,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
