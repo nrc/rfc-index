@@ -46,7 +46,7 @@ enum Command {
     Add {
         /// Identify the RFC by number.
         number: u64,
-        #[structopt(long)]
+        #[structopt(short, long)]
         force: bool,
         #[structopt(flatten)]
         flags: AddFlags,
@@ -77,7 +77,7 @@ enum Command {
 
 #[derive(StructOpt)]
 struct AddFlags {
-    #[structopt(short, long)]
+    #[structopt(long)]
     filename: String,
     #[structopt(long)]
     start_date: String,
@@ -87,14 +87,14 @@ struct AddFlags {
     feature_name: Option<String>,
     #[structopt(long)]
     issues: Option<String>,
-    #[structopt(short, long)]
+    #[structopt(long)]
     title: Option<String>,
     // TODO tags
 }
 
 #[derive(StructOpt)]
 struct SetFlags {
-    #[structopt(short, long)]
+    #[structopt(long)]
     filename: Option<String>,
     #[structopt(long)]
     start_date: Option<String>,
@@ -104,14 +104,14 @@ struct SetFlags {
     feature_name: Option<String>,
     #[structopt(long)]
     issues: Option<String>,
-    #[structopt(short, long)]
+    #[structopt(long)]
     title: Option<String>,
     // TODO tags
 }
 
 #[derive(StructOpt)]
 struct GetFlags {
-    #[structopt(short, long)]
+    #[structopt(long)]
     filename: bool,
     #[structopt(long)]
     start_date: bool,
@@ -121,7 +121,7 @@ struct GetFlags {
     feature_name: bool,
     #[structopt(long)]
     issues: bool,
-    #[structopt(short, long)]
+    #[structopt(long)]
     title: bool,
     #[structopt(long)]
     tags: bool,
