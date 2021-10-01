@@ -185,7 +185,42 @@ fn parse_multiple(input: &str) -> Vec<String> {
 }
 
 fn run_set(number: u64, flags: SetFlags) {
-    // TODO
+    match set_metadata(number, flags) {
+        Ok(_) => {}
+        Err(Error::FileNotFound) => {
+            eprintln!("RFC {} does not have metadata", number);
+            process::exit(ExitCode::MissingMetadata as i32);
+        }
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+    }
+}
+
+fn set_metadata(number: u64, flags: SetFlags) -> Result<()> {
+    let mut metadata = open_metadata(number)?;
+
+    if let Some(f) = flags.filename {
+        metadata.filename = f;
+    }
+    if let Some(f) = flags.start_date {
+        metadata.start_date = f;
+    }
+    if let Some(f) = flags.merge_date {
+        metadata.merge_date = Some(f);
+    }
+    if let Some(s) = flags.feature_name {
+        metadata.feature_name = parse_multiple(&s);
+    }
+    if let Some(s) = flags.issues {
+        metadata.issues = parse_multiple(&s);
+    }
+    if let Some(f) = flags.title {
+        metadata.title = Some(f);
+    }
+
+    save_metadata(&metadata)
 }
 
 fn run_get(number: u64, verbose: bool, flags: GetFlags) {
