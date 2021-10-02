@@ -1,3 +1,4 @@
+use handlebars::{RenderError, TemplateError};
 use std::io;
 
 // TODO Display impl
@@ -9,6 +10,8 @@ pub enum Error {
     UnsupportedMetadataVersion(u64),
     MetadataAlreadyExists,
     Parse,
+    HandlebarsTemplate,
+    HandlebarsRender,
 }
 
 impl From<serde_json::Error> for Error {
@@ -23,6 +26,19 @@ impl From<io::Error> for Error {
             io::ErrorKind::NotFound => Error::FileNotFound,
             _ => Error::Io,
         }
+    }
+}
+
+impl From<TemplateError> for Error {
+    fn from(e: TemplateError) -> Error {
+        eprintln!("{}", e);
+        Error::HandlebarsTemplate
+    }
+}
+
+impl From<RenderError> for Error {
+    fn from(_: RenderError) -> Error {
+        Error::HandlebarsRender
     }
 }
 

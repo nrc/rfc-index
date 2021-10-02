@@ -4,8 +4,9 @@ use crate::{
     parse_multiple,
 };
 use std::{
+    cmp::Ordering,
     fs::{self, File},
-    io::{BufRead, BufReader},
+    io::{BufRead, BufReader, Read},
     path::PathBuf,
     process::Command,
 };
@@ -39,10 +40,41 @@ pub struct GhMetadata {
     path: PathBuf,
 }
 
+#[derive(Debug, Clone)]
+pub struct GhData {
+    pub number: u64,
+    pub filename: String,
+    pub text: String,
+}
+
+impl PartialEq for GhData {
+    fn eq(&self, other: &GhData) -> bool {
+        self.number == other.number
+    }
+}
+
+impl Eq for GhData {}
+
+impl PartialOrd for GhData {
+    fn partial_cmp(&self, other: &GhData) -> Option<Ordering> {
+        self.number.partial_cmp(&other.number)
+    }
+}
+
+impl Ord for GhData {
+    fn cmp(&self, other: &GhData) -> Ordering {
+        self.number.cmp(&other.number)
+    }
+}
+
 impl GhMetadata {
     pub fn number(&self) -> Result<u64> {
-        self.filename[..4].parse().map_err(|_| Error::Parse)
+        rfc_number(&self.filename)
     }
+}
+
+fn rfc_number(filename: &str) -> Result<u64> {
+    filename[..4].parse().map_err(|_| Error::Parse)
 }
 
 impl TryFrom<GhMetadata> for RfcMetadata {
@@ -101,7 +133,7 @@ impl<'a> TryFrom<&'a str> for MetaTextElement {
     }
 }
 
-pub fn get_merged_rfc_data() -> Result<Vec<GhMetadata>> {
+pub fn get_merged_rfc_metadata() -> Result<Vec<GhMetadata>> {
     init_working_repo()?;
 
     let mut text_path = PathBuf::from(WORKING_DIR);
@@ -117,4 +149,29 @@ pub fn get_merged_rfc_data() -> Result<Vec<GhMetadata>> {
         .collect();
 
     Ok(result)
+}
+
+pub fn get_merged_rfc_data() -> Result<Vec<GhData>> {
+    init_working_repo()?;
+
+    let mut text_path = PathBuf::from(WORKING_DIR);
+    text_path.push(TEXT_DIR);
+
+    fs::read_dir(&text_path)?
+        .filter_map(|e| e.ok())
+        .filter(|p| !p.file_type().unwrap().is_dir())
+        .map(|entry| {
+            let filename = entry.file_name().into_string().unwrap();
+            let number = rfc_number(&filename)?;
+            let mut file = File::open(&entry.path())?;
+            let mut text = String::new();
+            file.read_to_string(&mut text)?;
+
+            Ok(GhData {
+                number,
+                filename,
+                text,
+            })
+        })
+        .collect()
 }

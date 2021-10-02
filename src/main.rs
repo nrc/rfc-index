@@ -16,7 +16,7 @@
 
 use crate::{
     errors::{Error, Result},
-    github::get_merged_rfc_data,
+    github::get_merged_rfc_metadata,
     metadata::{
         all_metadata, delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata,
     },
@@ -399,7 +399,7 @@ fn run_scan_merged(force: bool) {
 }
 
 fn scan_merged(force: bool) -> Result<()> {
-    let gh_data = get_merged_rfc_data()?;
+    let gh_data = get_merged_rfc_metadata()?;
     for datum in gh_data {
         let number = datum.number()?;
         if force || metadata_exists(number).is_err() {
