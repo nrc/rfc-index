@@ -2,6 +2,7 @@
 // CLI
 //   add/remove/replace tag for multiple or single RFC
 //   scan metadata for new
+//     tags
 //   update from scan
 //     specific RFC
 //     update metadata as well as replace
@@ -24,6 +25,7 @@ use std::process;
 use structopt::StructOpt;
 
 mod errors;
+mod generate;
 mod github;
 mod metadata;
 
@@ -54,6 +56,7 @@ fn main() {
             }
         }
         Command::Stats => run_stats(),
+        Command::Generate => run_generate(),
     }
 }
 
@@ -106,6 +109,8 @@ enum Command {
     },
     /// Emit stats about the metadata
     Stats,
+    /// Generate the RFC website.
+    Generate,
 }
 
 #[derive(StructOpt)]
@@ -436,6 +441,16 @@ fn run_stats() {
         two_tags,
         (two_tags as f64 / total as f64) * 100.0
     );
+}
+
+fn run_generate() {
+    match generate::generate() {
+        Ok(_) => {}
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+    }
 }
 
 #[cfg(test)]
