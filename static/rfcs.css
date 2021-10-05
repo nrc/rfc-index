@@ -23,6 +23,66 @@ div.body {
   flex: 1 0;
 }
 
+div.body-text {
+  display: inline-block;
+  max-width: 800px;
+  margin: 20px;
+  padding-top: 20px;
+}
+
+div.rfc-body {
+  display: inline-block;
+  max-width: 800px;
+  margin: 20px;
+  padding-top: 20px;
+  text-align: justify;
+}
+
+p.blurb {
+  text-align: justify;
+}
+
+.rfc-list {
+  text-align: justify;
+  list-style-type: none;
+}
+
+.rfc-body code {
+  background: #f6f7f6;
+}
+
+.rfc-body pre {
+  background: #f6f7f6;
+  padding: 20px;
+  font-size: 0.875em;
+}
+
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+table td {
+    padding: 3px 20px;
+    border: 1px hsl(0, 0%, 95%) solid;
+}
+table thead {
+    background: hsl(0, 0%, 80%);
+}
+table thead td {
+    font-weight: 700;
+    border: none;
+}
+table thead th {
+    padding: 3px 20px;
+}
+table thead tr {
+    border: 1px hsl(0, 0%, 80%) solid;
+}
+/* Alternate background colors for rows */
+table tbody tr:nth-child(2n) {
+    background: hsl(0, 0%, 97%);
+}
+
 div.footer {
   flex-shrink: 0;
   color: white;
@@ -34,3 +94,9 @@ div.footer {
   background-size: cover;
   background-position: center bottom ;
 }
+
+a {
+  text-decoration: underline;
+  color: #000040;
+}
+

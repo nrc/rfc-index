@@ -1,4 +1,4 @@
-use crate::{errors::Result, github::get_merged_rfc_data};
+use crate::{errors::Result, github::get_merged_rfc_data, metadata::open_metadata};
 use handlebars::Handlebars;
 use mdbook::utils::render_markdown;
 use serde::Serialize;
@@ -51,9 +51,12 @@ pub fn generate() -> Result<()> {
     let mut elements = Vec::with_capacity(rfc_data.len());
 
     for rfc in rfc_data {
+        let metadata = open_metadata(rfc.number)?;
+
         let number = format!("{:0>4}", rfc.number);
-        // TODO title from metadata (fallback to filename)
-        let title = format!("foo");
+        let title = metadata
+            .title
+            .unwrap_or_else(|| rfc.filename[5..rfc.filename.len() - 3].to_owned());
         let url = format!("{}.html", number);
 
         // RFC pages

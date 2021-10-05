@@ -11,13 +11,15 @@
 </head>
 <body>
   <div class="body">
-    <p>Changes to <a href="https://www.rust-lang.org/">Rust</a> are made through the RFC (request for comments) <a href="https://github.com/rust-lang/rfcs#readme">process</a>. Accepted RFCs are some of the best reference material available for understanding Rust in depth. However, it can be difficult to find the information you need. This website is an attempt to rectify that by providing an index and classification of RFCs.</p>
-    <p>The canonical record of RFCs is the <a href="https://github.com/rust-lang/rfcs">RFC repo</a>. You might also want to browse the <a href="https://rust-lang.github.io/rfcs">RFC book</a>. The source code and metadata for this website is open source and developed on <a href="https://github.com/nrc/rfc-index">GitHub</a>.</p>
-    <ul class="rfc-list">
-      {{#each rfcs}}
-      <li><a href="{{url}}">{{number}} {{title}}</a></li>
-      {{/each}}
-    </ul>
+    <div class="body-text">
+      <p class="blurb">Changes to <a href="https://www.rust-lang.org/" target="_blank">Rust</a> are made through the RFC (request for comments) <a href="https://github.com/rust-lang/rfcs#readme" target="_blank">process</a>. Accepted RFCs are some of the best reference material available for understanding Rust in depth. However, it can be difficult to find the information you need. This website is an attempt to rectify that by providing an index and classification of RFCs.</p>
+      <p class="blurb">The canonical record of RFCs is the <a href="https://github.com/rust-lang/rfcs" target="_blank">RFC repo</a>. You might also want to browse the <a href="https://rust-lang.github.io/rfcs" target="_blank">RFC book</a>. The source code and metadata for this website is open source and developed on <a href="https://github.com/nrc/rfc-index" target="_blank">GitHub</a>.</p>
+      <ul class="rfc-list">
+        {{#each rfcs}}
+        <li><a href="{{url}}">{{number}} {{title}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
   <div class="footer">Copyright 2021 Nick Cameron.</div>
 </body>
