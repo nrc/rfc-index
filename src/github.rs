@@ -1,8 +1,9 @@
 use crate::{
     errors::{Error, Result},
-    metadata::RfcMetadata,
+    metadata::{RfcMetadata, Team},
     parse_multiple,
 };
+use octocrab::models::pulls::PullRequest;
 use std::{
     cmp::Ordering,
     fs::{self, File},
@@ -10,6 +11,7 @@ use std::{
     path::PathBuf,
     process::Command,
 };
+use tokio::runtime::Runtime;
 
 const PR_URL: &str = "https://github.com/rust-lang/rfcs/pull/";
 const TEXT_URL: &str = "https://github.com/rust-lang/rfcs/blob/master/text/";
@@ -174,4 +176,41 @@ pub fn get_merged_rfc_data() -> Result<Vec<GhData>> {
             })
         })
         .collect()
+}
+
+const LABEL_T_LANG: &str = "T-lang";
+const LABEL_T_CARGO: &str = "T-cargo";
+const LABEL_T_LIBS_API: &str = "T-libs-api";
+const LABEL_T_CORE: &str = "T-core";
+
+async fn get_pr(number: u64) -> Result<PullRequest> {
+    let pr = octocrab::instance()
+        .pulls("rust-lang", "rfcs")
+        .get(number)
+        .await?;
+    Ok(pr)
+}
+
+async fn any_label<T>(number: u64, f: impl Fn(&str) -> Option<T>) -> Result<Option<T>> {
+    Ok(get_pr(number)
+        .await?
+        .labels
+        .unwrap_or(Vec::new())
+        .iter()
+        .filter_map(|l| f(&l.name))
+        .next())
+}
+
+pub fn team(number: u64) -> Result<Team> {
+    Runtime::new().unwrap().block_on(async {
+        any_label(number, |l| match l {
+            LABEL_T_LANG => Some(Team::Lang),
+            LABEL_T_CARGO => Some(Team::Cargo),
+            LABEL_T_LIBS_API => Some(Team::Libs),
+            LABEL_T_CORE => Some(Team::Core),
+            _ => None,
+        })
+        .await?
+        .ok_or(Error::MissingMetadata)
+    })
 }

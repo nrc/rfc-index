@@ -16,9 +16,10 @@
 
 use crate::{
     errors::{Error, Result},
-    github::get_merged_rfc_metadata,
+    github::{get_merged_rfc_metadata, team},
     metadata::{
         all_metadata, delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata,
+        Tag,
     },
 };
 use std::process;
@@ -403,7 +404,11 @@ fn scan_merged(force: bool) -> Result<()> {
     for datum in gh_data {
         let number = datum.number()?;
         if force || metadata_exists(number).is_err() {
-            let metadata = datum.try_into()?;
+            let mut metadata: RfcMetadata = datum.try_into()?;
+            match team(metadata.number) {
+                Ok(team) => metadata.tags.push(Tag::Team(team)),
+                Err(e) => eprintln!("{:?}", e),
+            }
             save_metadata(&metadata)?;
         }
     }

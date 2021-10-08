@@ -45,19 +45,32 @@ pub enum Tag {
     Retired,
     Superseded,
 }
-
-// TODO should be custom?
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Topic {
-    Processes,
+    Lang(LangTopic),
+    Libs(LibsTopic),
+    Core(CoreTopic),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum LangTopic {
     Traits,
     TraitObjects,
     Dsts,
     DataTypes,
     Attributes,
     Generics,
-    Std,
     Syntax,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum CoreTopic {
+    Processes,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum LibsTopic {
+    Std,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
