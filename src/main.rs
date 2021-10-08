@@ -16,10 +16,9 @@
 
 use crate::{
     errors::{Error, Result},
-    github::{get_merged_rfc_metadata, team},
+    github::{get_merged_rfc_metadata, update_from_pr},
     metadata::{
         all_metadata, delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata,
-        Tag,
     },
 };
 use std::process;
@@ -54,6 +53,9 @@ fn main() {
             }
             if merged {
                 run_scan_merged(force);
+            }
+            if !open && !merged {
+                eprintln!("warning: no scan run, use either --merged or --open");
             }
         }
         Command::Stats => run_stats(),
@@ -385,7 +387,7 @@ fn run_delete(number: u64) {
     }
 }
 
-fn run_scan_open(force: bool) {
+fn run_scan_open(_force: bool) {
     unimplemented!();
 }
 
@@ -405,12 +407,11 @@ fn scan_merged(force: bool) -> Result<()> {
         let number = datum.number()?;
         if force || metadata_exists(number).is_err() {
             let mut metadata: RfcMetadata = datum.try_into()?;
-            match team(metadata.number) {
-                Ok(team) => metadata.tags.push(Tag::Team(team)),
-                Err(e) => eprintln!("{:?}", e),
-            }
+            update_from_pr(&mut metadata)?;
             save_metadata(&metadata)?;
         }
+        // Progress indicator
+        print!(".");
     }
 
     Ok(())

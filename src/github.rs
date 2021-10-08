@@ -1,9 +1,9 @@
 use crate::{
     errors::{Error, Result},
-    metadata::{RfcMetadata, Team},
+    metadata::{RfcMetadata, Tag, Team},
     parse_multiple,
 };
-use octocrab::models::pulls::PullRequest;
+use octocrab::{models::pulls::PullRequest, OctocrabBuilder};
 use std::{
     cmp::Ordering,
     fs::{self, File},
@@ -13,8 +13,6 @@ use std::{
 };
 use tokio::runtime::Runtime;
 
-const PR_URL: &str = "https://github.com/rust-lang/rfcs/pull/";
-const TEXT_URL: &str = "https://github.com/rust-lang/rfcs/blob/master/text/";
 const GIT_URL: &str = "git@github.com:rust-lang/rfcs.git";
 const GIT_MAIN_BRANCH: &str = "master";
 const WORKING_DIR: &str = "work";
@@ -182,35 +180,45 @@ const LABEL_T_LANG: &str = "T-lang";
 const LABEL_T_CARGO: &str = "T-cargo";
 const LABEL_T_LIBS_API: &str = "T-libs-api";
 const LABEL_T_CORE: &str = "T-core";
+const LABEL_T_COMPILER: &str = "T-compiler";
+const LABEL_T_DEV_TOOLS: &str = "T-dev-tools";
+const LABEL_T_RUSTDOC: &str = "T-rustdoc";
+const LABEL_T_DOC: &str = "T-doc";
 
 async fn get_pr(number: u64) -> Result<PullRequest> {
-    let pr = octocrab::instance()
+    let pr = OctocrabBuilder::new()
+        .personal_token(include_str!("../token.in").to_owned())
+        .build()
+        .unwrap()
         .pulls("rust-lang", "rfcs")
         .get(number)
         .await?;
     Ok(pr)
 }
 
-async fn any_label<T>(number: u64, f: impl Fn(&str) -> Option<T>) -> Result<Option<T>> {
-    Ok(get_pr(number)
-        .await?
-        .labels
-        .unwrap_or(Vec::new())
-        .iter()
-        .filter_map(|l| f(&l.name))
-        .next())
-}
-
-pub fn team(number: u64) -> Result<Team> {
+pub fn update_from_pr(metadata: &mut RfcMetadata) -> Result<()> {
     Runtime::new().unwrap().block_on(async {
-        any_label(number, |l| match l {
-            LABEL_T_LANG => Some(Team::Lang),
-            LABEL_T_CARGO => Some(Team::Cargo),
-            LABEL_T_LIBS_API => Some(Team::Libs),
-            LABEL_T_CORE => Some(Team::Core),
-            _ => None,
-        })
-        .await?
-        .ok_or(Error::MissingMetadata)
+        let pr = get_pr(metadata.number).await?;
+
+        match &pr.labels {
+            Some(l) => {
+                let teams = l.iter().filter_map(|l| match &*l.name {
+                    LABEL_T_LANG => Some(Team::Lang),
+                    LABEL_T_LIBS_API => Some(Team::Libs),
+                    LABEL_T_CORE => Some(Team::Core),
+                    LABEL_T_COMPILER => Some(Team::Compiler),
+                    LABEL_T_DEV_TOOLS | LABEL_T_RUSTDOC | LABEL_T_CARGO => Some(Team::Tools),
+                    LABEL_T_DOC => Some(Team::Docs),
+                    _ => None,
+                });
+
+                for team in teams {
+                    metadata.tags.push(Tag::Team(team));
+                }
+            }
+            None => return Err(Error::GitHub), // format!("No labels for PR {}", metadata.number),
+        }
+
+        Ok(())
     })
 }

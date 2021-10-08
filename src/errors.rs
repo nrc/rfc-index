@@ -13,7 +13,6 @@ pub enum Error {
     HandlebarsTemplate,
     HandlebarsRender,
     GitHub,
-    MissingMetadata,
 }
 
 impl From<serde_json::Error> for Error {
@@ -45,7 +44,8 @@ impl From<RenderError> for Error {
 }
 
 impl From<octocrab::Error> for Error {
-    fn from(_: octocrab::Error) -> Error {
+    fn from(e: octocrab::Error) -> Error {
+        dbg!(&e);
         Error::GitHub
     }
 }

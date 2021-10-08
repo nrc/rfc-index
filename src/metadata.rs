@@ -77,9 +77,10 @@ pub enum LibsTopic {
 pub enum Team {
     Lang,
     Libs,
-    Cargo,
     Core,
     Tools,
+    Compiler,
+    Docs,
 }
 
 fn metadata_filename(number: u64) -> String {
