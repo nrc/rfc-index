@@ -1,1 +1,1 @@
-{"version":1,"number":2229,"filename":"2229-capture-disjoint-fields.md","start_date":"2017-11-28","feature_name":["capture_disjoint_fields"],"issues":["[rust-lang/rust#53488](https://github.com/rust-lang/rust/issues/53488)"],"title":null,"tags":[]}
+{"version":1,"number":2229,"filename":"2229-capture-disjoint-fields.md","start_date":"2017-11-28","feature_name":["capture_disjoint_fields"],"issues":["[rust-lang/rust#53488](https://github.com/rust-lang/rust/issues/53488)"],"title":null,"tags":[{"Team":"Lang"}]}

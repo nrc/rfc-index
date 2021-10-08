@@ -1,1 +1,1 @@
-{"version":1,"number":1845,"filename":"1845-shared-from-slice.md","start_date":"2017-01-05","feature_name":["shared_from_slice"],"issues":["[rust-lang/rust#40475](https://github.com/rust-lang/rust/issues/40475)"],"title":null,"tags":[]}
+{"version":1,"number":1845,"filename":"1845-shared-from-slice.md","start_date":"2017-01-05","feature_name":["shared_from_slice"],"issues":["[rust-lang/rust#40475](https://github.com/rust-lang/rust/issues/40475)"],"title":null,"tags":[{"Team":"Libs"}]}

@@ -1,1 +1,1 @@
-{"version":1,"number":1506,"filename":"1506-adt-kinds.md","start_date":"2016-02-07","feature_name":["clarified_adt_kinds"],"issues":["[rust-lang/rust#35626](https://github.com/rust-lang/rust/issues/35626)"],"title":null,"tags":[]}
+{"version":1,"number":1506,"filename":"1506-adt-kinds.md","start_date":"2016-02-07","feature_name":["clarified_adt_kinds"],"issues":["[rust-lang/rust#35626](https://github.com/rust-lang/rust/issues/35626)"],"title":null,"tags":[{"Team":"Lang"}]}

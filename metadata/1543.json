@@ -1,1 +1,1 @@
-{"version":1,"number":1543,"filename":"1543-integer_atomics.md","start_date":"2016-03-14","feature_name":["integer_atomics"],"issues":["[rust-lang/rust#32976](https://github.com/rust-lang/rust/issues/32976)"],"title":null,"tags":[]}
+{"version":1,"number":1543,"filename":"1543-integer_atomics.md","start_date":"2016-03-14","feature_name":["integer_atomics"],"issues":["[rust-lang/rust#32976](https://github.com/rust-lang/rust/issues/32976)"],"title":null,"tags":[{"Team":"Libs"}]}

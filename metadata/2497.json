@@ -1,1 +1,1 @@
-{"version":1,"number":2497,"filename":"2497-if-let-chains.md","start_date":"2018-07-13","feature_name":["let_chains_2"],"issues":["[rust-lang/rust#53668](https://github.com/rust-lang/rust/issues/53668)"],"title":null,"tags":[]}
+{"version":1,"number":2497,"filename":"2497-if-let-chains.md","start_date":"2018-07-13","feature_name":["let_chains_2"],"issues":["[rust-lang/rust#53668](https://github.com/rust-lang/rust/issues/53668)"],"title":null,"tags":[{"Team":"Lang"}]}

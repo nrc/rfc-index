@@ -1,1 +1,1 @@
-{"version":1,"number":1440,"filename":"1440-drop-types-in-const.md","start_date":"2016-01-01","feature_name":["drop_types_in_const"],"issues":["[rust-lang/rust#33156](https://github.com/rust-lang/rust/issues/33156)"],"title":null,"tags":[]}
+{"version":1,"number":1440,"filename":"1440-drop-types-in-const.md","start_date":"2016-01-01","feature_name":["drop_types_in_const"],"issues":["[rust-lang/rust#33156](https://github.com/rust-lang/rust/issues/33156)"],"title":null,"tags":[{"Team":"Lang"}]}

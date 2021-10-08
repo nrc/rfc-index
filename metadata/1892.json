@@ -1,1 +1,1 @@
-{"version":1,"number":1892,"filename":"1892-uninitialized-uninhabited.md","start_date":"2017-02-09","feature_name":["uninitialized_uninhabited"],"issues":["[rust-lang/rust#53491](https://github.com/rust-lang/rust/issues/53491)"],"title":null,"tags":[]}
+{"version":1,"number":1892,"filename":"1892-uninitialized-uninhabited.md","start_date":"2017-02-09","feature_name":["uninitialized_uninhabited"],"issues":["[rust-lang/rust#53491](https://github.com/rust-lang/rust/issues/53491)"],"title":null,"tags":[{"Team":"Lang"},{"Team":"Libs"}]}

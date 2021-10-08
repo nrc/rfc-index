@@ -1,1 +1,1 @@
-{"version":1,"number":1679,"filename":"1679-panic-safe-slicing.md","start_date":"2015-10-16","feature_name":["panic_safe_slicing"],"issues":["[rust-lang/rfcs#35729](https://github.com/rust-lang/rust/issues/35729)"],"title":null,"tags":[]}
+{"version":1,"number":1679,"filename":"1679-panic-safe-slicing.md","start_date":"2015-10-16","feature_name":["panic_safe_slicing"],"issues":["[rust-lang/rfcs#35729](https://github.com/rust-lang/rust/issues/35729)"],"title":null,"tags":[{"Team":"Libs"}]}

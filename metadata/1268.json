@@ -1,1 +1,1 @@
-{"version":1,"number":1268,"filename":"1268-allow-overlapping-impls-on-marker-traits.md","start_date":"2015-09-02","feature_name":["overlapping_marker_traits"],"issues":["[rust-lang/rust#29864](https://github.com/rust-lang/rust/issues/29864)"],"title":null,"tags":[]}
+{"version":1,"number":1268,"filename":"1268-allow-overlapping-impls-on-marker-traits.md","start_date":"2015-09-02","feature_name":["overlapping_marker_traits"],"issues":["[rust-lang/rust#29864](https://github.com/rust-lang/rust/issues/29864)"],"title":null,"tags":[{"Team":"Lang"}]}

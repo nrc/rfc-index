@@ -1,1 +1,1 @@
-{"version":1,"number":2302,"filename":"2302-tuple-struct-self-ctor.md","start_date":"2017-01-18","feature_name":["tuple_struct_self_ctor"],"issues":["[rust-lang/rust#51994](https://github.com/rust-lang/rust/issues/51994)"],"title":null,"tags":[]}
+{"version":1,"number":2302,"filename":"2302-tuple-struct-self-ctor.md","start_date":"2017-01-18","feature_name":["tuple_struct_self_ctor"],"issues":["[rust-lang/rust#51994](https://github.com/rust-lang/rust/issues/51994)"],"title":null,"tags":[{"Team":"Lang"}]}

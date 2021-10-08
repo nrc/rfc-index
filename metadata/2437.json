@@ -1,1 +1,1 @@
-{"version":1,"number":2437,"filename":"2437-rustfmt-stability.md","start_date":"2018-05-10","feature_name":["rustfmt_stability"],"issues":["[rust-lang/rust#54504](https://github.com/rust-lang/rust/issues/54504)"],"title":null,"tags":[]}
+{"version":1,"number":2437,"filename":"2437-rustfmt-stability.md","start_date":"2018-05-10","feature_name":["rustfmt_stability"],"issues":["[rust-lang/rust#54504](https://github.com/rust-lang/rust/issues/54504)"],"title":null,"tags":[{"Team":"Tools"}]}

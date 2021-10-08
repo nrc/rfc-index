@@ -1,1 +1,1 @@
-{"version":1,"number":2504,"filename":"2504-fix-error.md","start_date":"2018-07-18","feature_name":["fix_error"],"issues":["[rust-lang/rust#53487](https://github.com/rust-lang/rust/issues/53487)"],"title":null,"tags":[]}
+{"version":1,"number":2504,"filename":"2504-fix-error.md","start_date":"2018-07-18","feature_name":["fix_error"],"issues":["[rust-lang/rust#53487](https://github.com/rust-lang/rust/issues/53487)"],"title":null,"tags":[{"Team":"Libs"}]}

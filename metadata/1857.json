@@ -1,1 +1,1 @@
-{"version":1,"number":1857,"filename":"1857-stabilize-drop-order.md","start_date":"2017-01-19","feature_name":["stable_drop_order"],"issues":["[rust-lang/rust#43034](https://github.com/rust-lang/rust/issues/43034)"],"title":null,"tags":[]}
+{"version":1,"number":1857,"filename":"1857-stabilize-drop-order.md","start_date":"2017-01-19","feature_name":["stable_drop_order"],"issues":["[rust-lang/rust#43034](https://github.com/rust-lang/rust/issues/43034)"],"title":null,"tags":[{"Team":"Lang"}]}

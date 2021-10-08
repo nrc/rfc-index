@@ -1,1 +1,1 @@
-{"version":1,"number":2837,"filename":"2837-demote-apple-32bit.md","start_date":"2019-12-10","feature_name":["demote_apple_32bit"],"issues":["[rust-lang/rust#67724](https://github.com/rust-lang/rust/issues/67724)"],"title":null,"tags":[]}
+{"version":1,"number":2837,"filename":"2837-demote-apple-32bit.md","start_date":"2019-12-10","feature_name":["demote_apple_32bit"],"issues":["[rust-lang/rust#67724](https://github.com/rust-lang/rust/issues/67724)"],"title":null,"tags":[{"Team":"Compiler"}]}

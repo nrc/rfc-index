@@ -1,1 +1,1 @@
-{"version":1,"number":2645,"filename":"2645-transparent-unions.md","start_date":"2019-02-13","feature_name":["transparent_enunions"],"issues":["[rust-lang/rust#60405](https://github.com/rust-lang/rust/issues/60405)"],"title":null,"tags":[]}
+{"version":1,"number":2645,"filename":"2645-transparent-unions.md","start_date":"2019-02-13","feature_name":["transparent_enunions"],"issues":["[rust-lang/rust#60405](https://github.com/rust-lang/rust/issues/60405)"],"title":null,"tags":[{"Team":"Lang"}]}
