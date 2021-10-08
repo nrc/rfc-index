@@ -13,6 +13,7 @@ pub enum Error {
     HandlebarsTemplate,
     HandlebarsRender,
     GitHub,
+    ParseTag(String),
 }
 
 impl From<serde_json::Error> for Error {

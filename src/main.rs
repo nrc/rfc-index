@@ -19,6 +19,7 @@ use crate::{
     github::{get_merged_rfc_metadata, update_from_pr},
     metadata::{
         all_metadata, delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata,
+        Tag,
     },
 };
 use std::process;
@@ -60,6 +61,7 @@ fn main() {
         }
         Command::Stats => run_stats(),
         Command::Generate => run_generate(),
+        Command::Query { tag } => run_query(tag),
     }
 }
 
@@ -114,6 +116,12 @@ enum Command {
     Stats,
     /// Generate the RFC website.
     Generate,
+    /// Query the metadata.
+    Query {
+        /// Include RFCs which have the given tag. If no tag is specified, include RFCs with no tag.
+        #[structopt(long)]
+        tag: Option<Option<String>>,
+    },
 }
 
 #[derive(StructOpt)]
@@ -457,6 +465,35 @@ fn run_generate() {
             process::exit(ExitCode::Other as i32);
         }
     }
+}
+
+fn run_query(tag: Option<Option<String>>) {
+    let mut metadata = match all_metadata() {
+        Ok(m) => m,
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+    };
+
+    if let Some(tag) = tag {
+        match tag {
+            Some(tag) => {
+                metadata = metadata
+                    .into_iter()
+                    .filter(|d| d.tags.contains(&tag.parse::<Tag>().unwrap()))
+                    .collect()
+            }
+            None => metadata = metadata.into_iter().filter(|d| d.tags.is_empty()).collect(),
+        }
+    }
+
+    metadata.sort();
+    for m in metadata {
+        // FIXME data printed should be specified by the query
+        print!("{}, ", m.number);
+    }
+    println!();
 }
 
 #[cfg(test)]

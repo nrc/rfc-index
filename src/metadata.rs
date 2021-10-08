@@ -1,9 +1,11 @@
 use crate::errors::{Error, Result};
 use serde::{Deserialize, Serialize};
 use std::{
+    cmp::Ordering,
     fs::{self, File},
     io::{Read, Write},
     path::Path,
+    str::FromStr,
 };
 
 const METADATA_VERSION: u64 = 1;
@@ -36,7 +38,27 @@ impl RfcMetadata {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+impl PartialEq for RfcMetadata {
+    fn eq(&self, other: &RfcMetadata) -> bool {
+        self.number == other.number
+    }
+}
+
+impl Eq for RfcMetadata {}
+
+impl PartialOrd for RfcMetadata {
+    fn partial_cmp(&self, other: &RfcMetadata) -> Option<Ordering> {
+        self.number.partial_cmp(&other.number)
+    }
+}
+
+impl Ord for RfcMetadata {
+    fn cmp(&self, other: &RfcMetadata) -> Ordering {
+        self.number.cmp(&other.number)
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum Tag {
     Team(Team),
     Topic(Topic),
@@ -45,14 +67,15 @@ pub enum Tag {
     Retired,
     Superseded,
 }
-#[derive(Serialize, Deserialize, Debug)]
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum Topic {
     Lang(LangTopic),
     Libs(LibsTopic),
     Core(CoreTopic),
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum LangTopic {
     Traits,
     TraitObjects,
@@ -63,17 +86,17 @@ pub enum LangTopic {
     Syntax,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum CoreTopic {
     Processes,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum LibsTopic {
     Std,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum Team {
     Lang,
     Libs,
@@ -81,6 +104,22 @@ pub enum Team {
     Tools,
     Compiler,
     Docs,
+}
+
+impl FromStr for Tag {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Tag> {
+        match s {
+            "t-lang" => Ok(Tag::Team(Team::Lang)),
+            "t-libs" => Ok(Tag::Team(Team::Libs)),
+            "t-core" => Ok(Tag::Team(Team::Core)),
+            "t-tools" => Ok(Tag::Team(Team::Tools)),
+            "t-compiler" => Ok(Tag::Team(Team::Compiler)),
+            "t-docs" => Ok(Tag::Team(Team::Docs)),
+            _ => Err(Error::ParseTag(s.to_owned())),
+        }
+    }
 }
 
 fn metadata_filename(number: u64) -> String {
