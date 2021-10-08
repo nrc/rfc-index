@@ -62,6 +62,7 @@ fn main() {
         Command::Stats => run_stats(),
         Command::Generate => run_generate(),
         Command::Query { tag } => run_query(tag),
+        Command::Tag { numbers, add } => run_tag(numbers, add),
     }
 }
 
@@ -121,6 +122,14 @@ enum Command {
         /// Include RFCs which have the given tag. If no tag is specified, include RFCs with no tag.
         #[structopt(long)]
         tag: Option<Option<String>>,
+    },
+    /// Set/update tags on metadata
+    Tag {
+        /// Specify RFCs to update.
+        numbers: Vec<u64>,
+        /// Add a tag to the RFCs.
+        #[structopt(long)]
+        add: Option<String>,
     },
 }
 
@@ -491,9 +500,40 @@ fn run_query(tag: Option<Option<String>>) {
     metadata.sort();
     for m in metadata {
         // FIXME data printed should be specified by the query
-        print!("{}, ", m.number);
+        print!("{} ", m.number);
     }
     println!();
+}
+
+fn run_tag(numbers: Vec<u64>, add: Option<String>) {
+    if numbers.is_empty() {
+        eprintln!("warning: no RFCs specified, doing nothing.");
+        return;
+    }
+
+    match tag(numbers, add) {
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+        _ => {}
+    }
+}
+
+fn tag(numbers: Vec<u64>, add: Option<String>) -> Result<()> {
+    let add = add.map(|a| a.parse::<Tag>()).transpose()?;
+    for n in numbers {
+        let mut metadata = open_metadata(n)?;
+        if let Some(add) = &add {
+            if !metadata.tags.contains(&add) {
+                metadata.tags.push(add.clone());
+            }
+        }
+
+        save_metadata(&metadata)?;
+    }
+
+    Ok(())
 }
 
 #[cfg(test)]
