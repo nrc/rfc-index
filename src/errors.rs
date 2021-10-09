@@ -33,13 +33,14 @@ impl From<io::Error> for Error {
 
 impl From<TemplateError> for Error {
     fn from(e: TemplateError) -> Error {
-        eprintln!("{}", e);
+        dbg!(&e);
         Error::HandlebarsTemplate
     }
 }
 
 impl From<RenderError> for Error {
-    fn from(_: RenderError) -> Error {
+    fn from(e: RenderError) -> Error {
+        dbg!(&e);
         Error::HandlebarsRender
     }
 }

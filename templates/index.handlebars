@@ -14,13 +14,42 @@
     <div class="body-text">
       <p class="blurb">Changes to <a href="https://www.rust-lang.org/" target="_blank">Rust</a> are made through the RFC (request for comments) <a href="https://github.com/rust-lang/rfcs#readme" target="_blank">process</a>. Accepted RFCs are some of the best reference material available for understanding Rust in depth. However, it can be difficult to find the information you need. This website is an attempt to rectify that by providing an index and classification of RFCs.</p>
       <p class="blurb">The canonical record of RFCs is the <a href="https://github.com/rust-lang/rfcs" target="_blank">RFC repo</a>. You might also want to browse the <a href="https://rust-lang.github.io/rfcs" target="_blank">RFC book</a>. The source code and metadata for this website is open source and developed on <a href="https://github.com/nrc/rfc-index" target="_blank">GitHub</a>.</p>
-      <ul class="rfc-list">
-        {{#each rfcs}}
-        <li><a href="{{url}}">{{number}} {{title}}</a></li>
+      <ul class="category-list">
+        {{#each teams}}
+        <li><a href="#" onclick="showList(this); return false;" name="{{name}}">{{name}}</a></li>
         {{/each}}
+      </ul>
+      <ul class="rfc-list" id="rfc-list">
       </ul>
     </div>
   </div>
   <div class="footer">Copyright 2021 Nick Cameron.</div>
 </body>
+<script type="text/javascript">
+  let data = {
+    {{#each teams}}
+    {{name}}: [
+      {{#each rfcs}}
+      { url: "{{url}}", number: "{{number}}", title: "{{title}}" },
+      {{/each}}
+    ],
+    {{/each}}
+  };
+
+  function showList(ev) {
+    let team = ev.name;
+    let list = document.getElementById('rfc-list');
+    list.innerHTML = '';
+    for (rfc of data[team]) {
+      let li = document.createElement('li');
+      let a = document.createElement('a');
+      a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
+      a.href = rfc.url;
+      li.appendChild(a);
+      list.appendChild(li)
+    }
+  }
+  // TODO on click for team list
+  // <li><a href="url">number title</a></li>
+</script>
 </html>

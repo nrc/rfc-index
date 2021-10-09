@@ -42,8 +42,14 @@ p.blurb {
   text-align: justify;
 }
 
+.category-list {
+  text-align: left;
+  list-style-type: none;
+  font-weight: bold;
+}
+
 .rfc-list {
-  text-align: justify;
+  text-align: left;
   list-style-type: none;
 }
 

@@ -1,4 +1,8 @@
-use crate::{errors::Result, github::get_merged_rfc_data, metadata::open_metadata};
+use crate::{
+    errors::Result,
+    github::get_merged_rfc_data,
+    metadata::{open_metadata, Tag, Team},
+};
 use handlebars::Handlebars;
 use mdbook::utils::render_markdown;
 use serde::Serialize;
@@ -75,11 +79,78 @@ pub fn generate() -> Result<()> {
         let mut file = File::create(dest)?;
         file.write_all(html.as_bytes())?;
 
-        let element = IndexElement { number, title, url };
+        let element = IndexElement {
+            number,
+            title,
+            url,
+            tags: metadata.tags,
+        };
         elements.push(element);
     }
 
-    let html = handlebars.render("index", &IndexTemplateData { rfcs: elements })?;
+    let teams = vec![
+        TeamTemplateData {
+            name: "core".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.contains(&Tag::Team(Team::Core)))
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "lang".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.contains(&Tag::Team(Team::Lang)))
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "libs".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.contains(&Tag::Team(Team::Libs)))
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "compiler".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.contains(&Tag::Team(Team::Compiler)))
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "tools".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.contains(&Tag::Team(Team::Tools)))
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "docs".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.contains(&Tag::Team(Team::Docs)))
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "unclassified".to_owned(),
+            rfcs: elements
+                .iter()
+                .filter(|d| d.tags.is_empty())
+                .cloned()
+                .collect(),
+        },
+        TeamTemplateData {
+            name: "all".to_owned(),
+            rfcs: elements,
+        },
+    ];
+    let html = handlebars.render("index", &IndexTemplateData { teams })?;
     let mut dest = PathBuf::new();
     dest.push(OUT_DIR);
     dest.push("index.html");
@@ -91,6 +162,12 @@ pub fn generate() -> Result<()> {
 
 #[derive(Serialize, Clone)]
 struct IndexTemplateData {
+    teams: Vec<TeamTemplateData>,
+}
+
+#[derive(Serialize, Clone)]
+struct TeamTemplateData {
+    name: String,
     rfcs: Vec<IndexElement>,
 }
 
@@ -99,6 +176,7 @@ struct IndexElement {
     number: String,
     title: String,
     url: String,
+    tags: Vec<Tag>,
 }
 
 #[derive(Serialize, Clone)]

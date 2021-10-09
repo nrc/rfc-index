@@ -12,7 +12,6 @@
 //     compare with scan
 //     date formats
 //     subcommands - check for missing title, tags
-//   generate website (handlebars)
 
 use crate::{
     errors::{Error, Result},
