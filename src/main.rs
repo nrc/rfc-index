@@ -249,6 +249,11 @@ fn parse_multiple(input: &str) -> Vec<String> {
         }
     }
 
+    let input = input.trim();
+    if input.to_uppercase() == "NA" || input.to_uppercase() == "N/A" {
+        return Vec::new();
+    }
+
     let mut result = Vec::new();
     let mut buf = String::new();
     let mut quoted = None;
@@ -290,11 +295,6 @@ fn parse_multiple(input: &str) -> Vec<String> {
 
     if !buf.is_empty() && buf != "and" {
         result.push(unquote(buf));
-    }
-
-    if result.len() == 1 && (result[0].to_uppercase() == "NA" || result[0].to_uppercase() == "N/A")
-    {
-        return Vec::new();
     }
 
     result
@@ -586,6 +586,8 @@ mod test {
         assert_eq!(parse_multiple(""), Vec::<String>::new());
         assert_eq!(parse_multiple(" "), Vec::<String>::new());
         assert_eq!(parse_multiple(", ,, and    , "), Vec::<String>::new());
+        assert_eq!(parse_multiple("NA"), Vec::<String>::new());
+        assert_eq!(parse_multiple("N/A "), Vec::<String>::new());
         assert_eq!(
             parse_multiple("foo bar"),
             vec!["foo".to_owned(), "bar".to_owned()]
