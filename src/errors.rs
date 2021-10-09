@@ -1,19 +1,31 @@
 use handlebars::{RenderError, TemplateError};
 use std::io;
+use thiserror::Error;
 
-// TODO Display impl
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum Error {
+    #[error("Serialization error (Serde)")]
     Serialization,
+    #[error("File not found")]
     FileNotFound,
+    #[error("IO error")]
     Io,
+    #[error("Unsupported metadata version: {0}")]
     UnsupportedMetadataVersion(u64),
+    #[error("Metadata already exists")]
     MetadataAlreadyExists,
+    #[error("Parsing error")]
     Parse,
+    #[error("Error in handlebars template")]
     HandlebarsTemplate,
+    #[error("Error rendering handlebars")]
     HandlebarsRender,
+    #[error("Error connecting to or using GitHub's API")]
     GitHub,
+    #[error("Error parsing a user-supplied tag: `{0}`")]
     ParseTag(String),
+    #[error("Error parsing a command line argument: `{0}`")]
+    ParseArg(String),
 }
 
 impl From<serde_json::Error> for Error {

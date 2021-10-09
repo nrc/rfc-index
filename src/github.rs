@@ -213,7 +213,9 @@ pub fn update_from_pr(metadata: &mut RfcMetadata) -> Result<()> {
                 });
 
                 for team in teams {
-                    metadata.tags.push(Tag::Team(team));
+                    if !metadata.tags.contains(&Tag::Team(team)) {
+                        metadata.tags.push(Tag::Team(team));
+                    }
                 }
             }
             None => return Err(Error::GitHub), // format!("No labels for PR {}", metadata.number),

@@ -17,11 +17,11 @@ use crate::{
     errors::{Error, Result},
     github::{get_merged_rfc_metadata, update_from_pr},
     metadata::{
-        all_metadata, delete_metadata, metadata_exists, open_metadata, save_metadata, RfcMetadata,
-        Tag,
+        all_metadata, all_metadata_numbers, delete_metadata, metadata_exists, open_metadata,
+        save_metadata, RfcMetadata, Tag,
     },
 };
-use std::process;
+use std::{process, str::FromStr};
 use structopt::StructOpt;
 
 mod errors;
@@ -61,7 +61,7 @@ fn main() {
         Command::Stats => run_stats(),
         Command::Generate => run_generate(),
         Command::Query { tag } => run_query(tag),
-        Command::Tag { numbers, add } => run_tag(numbers, add),
+        Command::Tag { numbers, add, scan } => run_tag(numbers, add, scan),
     }
 }
 
@@ -124,11 +124,14 @@ enum Command {
     },
     /// Set/update tags on metadata
     Tag {
-        /// Specify RFCs to update.
+        /// Specify RFCs to update, uses all known RFCs if none are specified.
         numbers: Vec<u64>,
         /// Add a tag to the RFCs.
         #[structopt(long)]
         add: Option<String>,
+        /// Scan PRs for tags.
+        #[structopt(long)]
+        scan: Option<Option<TagScanFlags>>,
     },
 }
 
@@ -176,6 +179,30 @@ struct GetFlags {
     title: bool,
     #[structopt(long)]
     tags: bool,
+}
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+enum TagScanFlags {
+    Default,
+    All,
+}
+
+impl Default for TagScanFlags {
+    fn default() -> TagScanFlags {
+        TagScanFlags::Default
+    }
+}
+
+impl FromStr for TagScanFlags {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<TagScanFlags> {
+        match s {
+            "" => Ok(TagScanFlags::Default),
+            "all" => Ok(TagScanFlags::All),
+            _ => Err(Error::ParseArg(s.to_owned())),
+        }
+    }
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -427,7 +454,7 @@ fn scan_merged(force: bool) -> Result<()> {
             save_metadata(&metadata)?;
         }
         // Progress indicator
-        print!(".");
+        eprint!(".");
     }
 
     Ok(())
@@ -504,13 +531,8 @@ fn run_query(tag: Option<Option<String>>) {
     println!();
 }
 
-fn run_tag(numbers: Vec<u64>, add: Option<String>) {
-    if numbers.is_empty() {
-        eprintln!("warning: no RFCs specified, doing nothing.");
-        return;
-    }
-
-    match tag(numbers, add) {
+fn run_tag(numbers: Vec<u64>, add: Option<String>, scan: Option<Option<TagScanFlags>>) {
+    match tag(numbers, add, scan) {
         Err(e) => {
             eprintln!("Error: {:?}", e);
             process::exit(ExitCode::Other as i32);
@@ -519,8 +541,19 @@ fn run_tag(numbers: Vec<u64>, add: Option<String>) {
     }
 }
 
-fn tag(numbers: Vec<u64>, add: Option<String>) -> Result<()> {
+fn tag(
+    mut numbers: Vec<u64>,
+    add: Option<String>,
+    scan: Option<Option<TagScanFlags>>,
+) -> Result<()> {
+    if numbers.is_empty() {
+        numbers = all_metadata_numbers()?;
+    }
+
     let add = add.map(|a| a.parse::<Tag>()).transpose()?;
+    let scan = scan.map(|s| s.unwrap_or_default());
+
+    // eprintln!("info: tagging {}", numbers.len());
     for n in numbers {
         let mut metadata = open_metadata(n)?;
         if let Some(add) = &add {
@@ -529,7 +562,16 @@ fn tag(numbers: Vec<u64>, add: Option<String>) -> Result<()> {
             }
         }
 
+        if let Some(scan) = scan {
+            if metadata.tags.is_empty() || scan == TagScanFlags::All {
+                update_from_pr(&mut metadata)?;
+            }
+        }
+
         save_metadata(&metadata)?;
+
+        // Progress indicator
+        eprint!(".");
     }
 
     Ok(())

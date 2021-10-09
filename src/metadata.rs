@@ -75,7 +75,7 @@ pub enum Topic {
     Core(CoreTopic),
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 pub enum LangTopic {
     Traits,
     TraitObjects,
@@ -86,17 +86,17 @@ pub enum LangTopic {
     Syntax,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 pub enum CoreTopic {
     Processes,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 pub enum LibsTopic {
     Std,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 pub enum Team {
     Lang,
     Libs,
@@ -168,4 +168,21 @@ pub fn all_metadata() -> Result<Vec<RfcMetadata>> {
         .filter(|e| !e.file_type().unwrap().is_dir())
         .map(|e| read_metadata(&e.path()))
         .collect()
+}
+
+pub fn all_metadata_numbers() -> Result<Vec<u64>> {
+    Ok(fs::read_dir(METADATA_DIR)?
+        .filter_map(|e| e.ok())
+        .filter(|e| !e.file_type().unwrap().is_dir())
+        .map(|e| {
+            e.file_name()
+                .into_string()
+                .unwrap()
+                .split('.')
+                .next()
+                .unwrap()
+                .parse()
+                .unwrap()
+        })
+        .collect())
 }
