@@ -2,14 +2,16 @@ use crate::errors::{Error, Result};
 use serde::{Deserialize, Serialize};
 use std::{
     cmp::Ordering,
+    collections::HashMap,
     fs::{self, File},
     io::{Read, Write},
-    path::Path,
+    path::{Path, PathBuf},
     str::FromStr,
 };
 
 const METADATA_VERSION: u64 = 1;
 const METADATA_DIR: &str = "metadata";
+const TAG_METADATA_FILENAME: &str = "tags.json";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct RfcMetadata {
@@ -60,7 +62,7 @@ impl Ord for RfcMetadata {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Hash)]
 pub enum Team {
     Lang,
     Libs,
@@ -84,6 +86,51 @@ impl FromStr for Team {
             _ => Err(Error::ParseTag(s.to_owned())),
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct TeamTags {
+    pub team: Team,
+    pub tags: Vec<String>,
+}
+
+pub struct TagMetadata {
+    by_tag: HashMap<String, Vec<Team>>,
+    by_team: HashMap<Team, Vec<String>>,
+}
+
+pub fn read_tag_metadata() -> Result<TagMetadata> {
+    let mut tags_path = PathBuf::from(METADATA_DIR);
+    tags_path.push(TAG_METADATA_FILENAME);
+    let mut file = File::open(&tags_path)?;
+    let mut serialized = String::new();
+    file.read_to_string(&mut serialized)?;
+    let tags: Vec<TeamTags> = serde_json::from_str(&serialized)?;
+
+    let mut by_tag = HashMap::new();
+    let mut by_team = HashMap::new();
+
+    for tt in tags {
+        for t in &tt.tags {
+            by_tag
+                .entry(t.clone())
+                .or_insert_with(|| Vec::new())
+                .push(tt.team);
+        }
+        by_team.insert(tt.team, tt.tags);
+    }
+
+    Ok(TagMetadata { by_tag, by_team })
+}
+
+pub fn write_tag_metadata(tags: Vec<TeamTags>) -> Result<()> {
+    let serialized = serde_json::to_string(&tags)?;
+    let mut tags_path = PathBuf::from(METADATA_DIR);
+    tags_path.push(TAG_METADATA_FILENAME);
+
+    let mut file = File::create(&tags_path)?;
+    file.write_all(serialized.as_bytes())?;
+    Ok(())
 }
 
 fn metadata_filename(number: u64) -> String {

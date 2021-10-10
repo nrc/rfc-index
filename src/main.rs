@@ -5,10 +5,10 @@
 
 use crate::{
     errors::{Error, Result},
-    github::{get_merged_rfc_metadata, update_from_pr},
+    github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr},
     metadata::{
         all_metadata, all_metadata_numbers, delete_metadata, metadata_exists, open_metadata,
-        save_metadata, RfcMetadata,
+        save_metadata, write_tag_metadata, RfcMetadata,
     },
 };
 use std::{process, str::FromStr};
@@ -51,7 +51,12 @@ fn main() {
         Command::Stats => run_stats(),
         Command::Generate => run_generate(),
         Command::Query { tag } => run_query(tag),
-        Command::Tag { numbers, add, scan } => run_tag(numbers, add, scan),
+        Command::Tag {
+            numbers,
+            add,
+            scan,
+            init,
+        } => run_tag(numbers, add, scan, init),
         Command::Migrate => run_migrate(),
     }
 }
@@ -123,6 +128,9 @@ enum Command {
         /// Scan PRs for tags.
         #[structopt(long)]
         scan: Option<Option<TagScanFlags>>,
+        /// Initialise tag metadata.
+        #[structopt(long)]
+        init: bool,
     },
     /// Migrate metadata between versions.
     Migrate,
@@ -527,8 +535,8 @@ fn run_query(tag: Option<Option<String>>) {
     println!();
 }
 
-fn run_tag(numbers: Vec<u64>, add: Option<String>, scan: Option<Option<TagScanFlags>>) {
-    match tag(numbers, add, scan) {
+fn run_tag(numbers: Vec<u64>, add: Option<String>, scan: Option<Option<TagScanFlags>>, init: bool) {
+    match tag(numbers, add, scan, init) {
         Err(e) => {
             eprintln!("Error: {:?}", e);
             process::exit(ExitCode::Other as i32);
@@ -541,7 +549,12 @@ fn tag(
     mut numbers: Vec<u64>,
     add: Option<String>,
     scan: Option<Option<TagScanFlags>>,
+    init: bool,
 ) -> Result<()> {
+    if init {
+        return tag_init();
+    }
+
     if numbers.is_empty() {
         numbers = all_metadata_numbers()?;
     }
@@ -570,6 +583,11 @@ fn tag(
     }
 
     Ok(())
+}
+
+fn tag_init() -> Result<()> {
+    let data = init_tag_metadata()?;
+    write_tag_metadata(data)
 }
 
 fn run_migrate() {

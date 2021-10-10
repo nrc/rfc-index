@@ -36,6 +36,7 @@ impl From<serde_json::Error> for Error {
 
 impl From<io::Error> for Error {
     fn from(e: io::Error) -> Error {
+        dbg!(&e);
         match e.kind() {
             io::ErrorKind::NotFound => Error::FileNotFound,
             _ => Error::Io,

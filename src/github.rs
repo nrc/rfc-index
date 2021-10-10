@@ -1,11 +1,12 @@
 use crate::{
     errors::{Error, Result},
-    metadata::{RfcMetadata, Team},
+    metadata::{RfcMetadata, Team, TeamTags},
     parse_multiple,
 };
 use octocrab::{models::pulls::PullRequest, OctocrabBuilder};
 use std::{
     cmp::Ordering,
+    collections::HashMap,
     fs::{self, File},
     io::{BufRead, BufReader, Read},
     path::PathBuf,
@@ -178,6 +179,7 @@ pub fn get_merged_rfc_data() -> Result<Vec<GhData>> {
 
 const LABEL_T_LANG: &str = "T-lang";
 const LABEL_T_CARGO: &str = "T-cargo";
+const LABEL_T_LIBS: &str = "T-libs";
 const LABEL_T_LIBS_API: &str = "T-libs-api";
 const LABEL_T_CORE: &str = "T-core";
 const LABEL_T_COMPILER: &str = "T-compiler";
@@ -204,7 +206,7 @@ pub fn update_from_pr(metadata: &mut RfcMetadata) -> Result<()> {
             Some(l) => {
                 let teams = l.iter().filter_map(|l| match &*l.name {
                     LABEL_T_LANG => Some(Team::Lang),
-                    LABEL_T_LIBS_API => Some(Team::Libs),
+                    LABEL_T_LIBS | LABEL_T_LIBS_API => Some(Team::Libs),
                     LABEL_T_CORE => Some(Team::Core),
                     LABEL_T_COMPILER => Some(Team::Compiler),
                     LABEL_T_DEV_TOOLS | LABEL_T_RUSTDOC | LABEL_T_CARGO => Some(Team::Tools),
@@ -222,5 +224,98 @@ pub fn update_from_pr(metadata: &mut RfcMetadata) -> Result<()> {
         }
 
         Ok(())
+    })
+}
+
+pub fn init_tag_metadata() -> Result<Vec<TeamTags>> {
+    init_working_repo()?;
+
+    let mut text_path = PathBuf::from(WORKING_DIR);
+    text_path.push(TEXT_DIR);
+
+    let numbers = fs::read_dir(&text_path)?
+        .filter_map(|e| e.ok())
+        .filter(|p| !p.file_type().unwrap().is_dir())
+        .map(|entry| {
+            let filename = entry.file_name().into_string().unwrap();
+            let number = rfc_number(&filename)?;
+            Ok(number)
+        })
+        .collect::<Result<Vec<u64>>>()?;
+
+    Runtime::new().unwrap().block_on(async {
+        let mut result = HashMap::new();
+        result.insert(Team::Lang, Vec::new());
+        result.insert(Team::Libs, Vec::new());
+        result.insert(Team::Core, Vec::new());
+        result.insert(Team::Tools, Vec::new());
+        result.insert(Team::Compiler, Vec::new());
+        result.insert(Team::Docs, Vec::new());
+
+        enum TeamOrTag {
+            Team(Team),
+            Tag(String),
+        }
+
+        for n in numbers {
+            let pr = get_pr(n).await?;
+            match &pr.labels {
+                Some(l) => {
+                    let (teams, tags): (Vec<TeamOrTag>, _) = l
+                        .iter()
+                        .filter(|l| l.name.starts_with("T-") || l.name.starts_with("A-"))
+                        .map(|l| match &*l.name {
+                            LABEL_T_LANG => TeamOrTag::Team(Team::Lang),
+                            LABEL_T_LIBS_API => TeamOrTag::Team(Team::Libs),
+                            LABEL_T_CORE => TeamOrTag::Team(Team::Core),
+                            LABEL_T_COMPILER => TeamOrTag::Team(Team::Compiler),
+                            LABEL_T_DEV_TOOLS | LABEL_T_RUSTDOC | LABEL_T_CARGO => {
+                                TeamOrTag::Team(Team::Tools)
+                            }
+                            LABEL_T_DOC => TeamOrTag::Team(Team::Docs),
+                            s => TeamOrTag::Tag(s.to_owned()),
+                        })
+                        .partition(|tt| matches!(tt, TeamOrTag::Team(_)));
+
+                    if tags.is_empty() {
+                        continue;
+                    }
+
+                    let teams: Vec<_> = teams
+                        .into_iter()
+                        .map(|t| match t {
+                            TeamOrTag::Team(t) => t,
+                            _ => unreachable!(),
+                        })
+                        .collect();
+                    let tags: Vec<_> = tags
+                        .into_iter()
+                        .map(|t| match t {
+                            TeamOrTag::Tag(t) => t,
+                            _ => unreachable!(),
+                        })
+                        .collect();
+
+                    match teams.len() {
+                        0 => println!("No teams: [{}]", tags.join(", ")),
+                        1 => {
+                            for t in tags {
+                                let v = &mut result.get_mut(&teams[0]).unwrap();
+                                if !v.contains(&t) {
+                                    v.push(t);
+                                }
+                            }
+                        }
+                        _ => println!("Multiple teams ({:?}): [{}]", teams, tags.join(", ")),
+                    }
+                }
+                None => return Err(Error::GitHub), // format!("No labels for PR {}", metadata.number),
+            }
+        }
+
+        Ok(result
+            .into_iter()
+            .map(|(team, tags)| TeamTags { team, tags })
+            .collect())
     })
 }
