@@ -142,7 +142,7 @@ pub fn generate() -> Result<()> {
             name: "unclassified".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.is_empty())
+                .filter(|d| d.teams.is_empty())
                 .cloned()
                 .collect(),
         },
