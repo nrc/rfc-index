@@ -1,1 +1,1 @@
-{"version":1,"number":3058,"filename":"3058-try-trait-v2.md","start_date":"2020-12-12","feature_name":["try_trait_v2"],"issues":["[rust-lang/rust#84277](https://github.com/rust-lang/rust/issues/84277)"],"title":null,"tags":[{"Team":"Lang"},{"Team":"Libs"}]}
+{"version":1,"number":3058,"filename":"3058-try-trait-v2.md","start_date":"2020-12-12","feature_name":["try_trait_v2"],"issues":["[rust-lang/rust#84277](https://github.com/rust-lang/rust/issues/84277)"],"title":null,"teams":["Lang","Libs"],"tags":[]}

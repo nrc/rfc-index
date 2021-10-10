@@ -1,1 +1,1 @@
-{"version":1,"number":1443,"filename":"1443-extended-compare-and-swap.md","start_date":"2016-1-5","feature_name":["extended_compare_and_swap"],"issues":["[rust-lang/rust#31767](https://github.com/rust-lang/rust/issues/31767)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":1443,"filename":"1443-extended-compare-and-swap.md","start_date":"2016-1-5","feature_name":["extended_compare_and_swap"],"issues":["[rust-lang/rust#31767](https://github.com/rust-lang/rust/issues/31767)"],"title":null,"teams":["Libs"],"tags":[]}

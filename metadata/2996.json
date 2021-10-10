@@ -1,1 +1,1 @@
-{"version":1,"number":2996,"filename":"2996-async-stream.md","start_date":"2020-09-29","feature_name":["async_stream"],"issues":["[rust-lang/rust#79024](https://github.com/rust-lang/rust/issues/79024)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":2996,"filename":"2996-async-stream.md","start_date":"2020-09-29","feature_name":["async_stream"],"issues":["[rust-lang/rust#79024](https://github.com/rust-lang/rust/issues/79024)"],"title":null,"teams":["Libs"],"tags":[]}

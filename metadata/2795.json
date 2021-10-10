@@ -1,1 +1,1 @@
-{"version":1,"number":2795,"filename":"2795-format-args-implicit-identifiers.md","start_date":"2019-10-27","feature_name":["format_args_implicits"],"issues":["[rust-lang/rust#67984](https://github.com/rust-lang/rust/issues/67984)"],"title":null,"tags":[{"Team":"Lang"},{"Team":"Libs"}]}
+{"version":1,"number":2795,"filename":"2795-format-args-implicit-identifiers.md","start_date":"2019-10-27","feature_name":["format_args_implicits"],"issues":["[rust-lang/rust#67984](https://github.com/rust-lang/rust/issues/67984)"],"title":null,"teams":["Lang","Libs"],"tags":[]}

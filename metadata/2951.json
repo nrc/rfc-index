@@ -1,1 +1,1 @@
-{"version":1,"number":2951,"filename":"2951-native-link-modifiers.md","start_date":"2020-06-12","feature_name":["native_link_modifiers"],"issues":["[rust-lang/rust#81490](https://github.com/rust-lang/rust/issues/81490)"],"title":null,"tags":[{"Team":"Compiler"}]}
+{"version":1,"number":2951,"filename":"2951-native-link-modifiers.md","start_date":"2020-06-12","feature_name":["native_link_modifiers"],"issues":["[rust-lang/rust#81490](https://github.com/rust-lang/rust/issues/81490)"],"title":null,"teams":["Compiler"],"tags":[]}

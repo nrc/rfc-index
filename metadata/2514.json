@@ -1,1 +1,1 @@
-{"version":1,"number":2514,"filename":"2514-union-initialization-and-drop.md","start_date":"2018-08-03","feature_name":["union_initialization_and_drop"],"issues":["[rust-lang/rust#55149](https://github.com/rust-lang/rust/issues/55149)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2514,"filename":"2514-union-initialization-and-drop.md","start_date":"2018-08-03","feature_name":["union_initialization_and_drop"],"issues":["[rust-lang/rust#55149](https://github.com/rust-lang/rust/issues/55149)"],"title":null,"teams":["Lang"],"tags":[]}

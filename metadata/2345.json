@@ -1,1 +1,1 @@
-{"version":1,"number":2345,"filename":"2345-const-panic.md","start_date":"2018-02-22","feature_name":["const_panic"],"issues":["[rust-lang/rust#51999](https://github.com/rust-lang/rust/issues/51999)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2345,"filename":"2345-const-panic.md","start_date":"2018-02-22","feature_name":["const_panic"],"issues":["[rust-lang/rust#51999](https://github.com/rust-lang/rust/issues/51999)"],"title":null,"teams":["Lang"],"tags":[]}

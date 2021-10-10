@@ -1,6 +1,6 @@
 use crate::{
     errors::{Error, Result},
-    metadata::{RfcMetadata, Tag, Team},
+    metadata::{RfcMetadata, Team},
     parse_multiple,
 };
 use octocrab::{models::pulls::PullRequest, OctocrabBuilder};
@@ -213,8 +213,8 @@ pub fn update_from_pr(metadata: &mut RfcMetadata) -> Result<()> {
                 });
 
                 for team in teams {
-                    if !metadata.tags.contains(&Tag::Team(team)) {
-                        metadata.tags.push(Tag::Team(team));
+                    if !metadata.teams.contains(&team) {
+                        metadata.teams.push(team);
                     }
                 }
             }

@@ -1,1 +1,1 @@
-{"version":1,"number":2132,"filename":"2132-copy-closures.md","start_date":"2017-08-27","feature_name":["copy_closures"],"issues":["[rust-lang/rust#44490](https://github.com/rust-lang/rust/issues/44490)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2132,"filename":"2132-copy-closures.md","start_date":"2017-08-27","feature_name":["copy_closures"],"issues":["[rust-lang/rust#44490](https://github.com/rust-lang/rust/issues/44490)"],"title":null,"teams":["Lang"],"tags":[]}

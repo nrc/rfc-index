@@ -1,1 +1,1 @@
-{"version":1,"number":2342,"filename":"2342-const-control-flow.md","start_date":"2018-01-11","feature_name":["const-control-flow"],"issues":["[rust-lang/rust#49146](https://github.com/rust-lang/rust/issues/49146)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2342,"filename":"2342-const-control-flow.md","start_date":"2018-01-11","feature_name":["const-control-flow"],"issues":["[rust-lang/rust#49146](https://github.com/rust-lang/rust/issues/49146)"],"title":null,"teams":["Lang"],"tags":[]}

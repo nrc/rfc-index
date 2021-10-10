@@ -1,1 +1,1 @@
-{"version":1,"number":2515,"filename":"2515-type_alias_impl_trait.md","start_date":"2018-08-03","feature_name":["type_alias_impl_trait"],"issues":["[rust-lang/rust#63063](https://github.com/rust-lang/rust/issues/63063)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2515,"filename":"2515-type_alias_impl_trait.md","start_date":"2018-08-03","feature_name":["type_alias_impl_trait"],"issues":["[rust-lang/rust#63063](https://github.com/rust-lang/rust/issues/63063)"],"title":null,"teams":["Lang"],"tags":[]}

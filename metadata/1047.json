@@ -1,1 +1,1 @@
-{"version":1,"number":1047,"filename":"1047-socket-timeouts.md","start_date":"2015-04-08","feature_name":["socket_timeouts"],"issues":["[rust-lang/rust#25619](https://github.com/rust-lang/rust/issues/25619)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":1047,"filename":"1047-socket-timeouts.md","start_date":"2015-04-08","feature_name":["socket_timeouts"],"issues":["[rust-lang/rust#25619](https://github.com/rust-lang/rust/issues/25619)"],"title":null,"teams":["Libs"],"tags":[]}

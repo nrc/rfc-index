@@ -1,1 +1,1 @@
-{"version":1,"number":982,"filename":"0982-dst-coercion.md","start_date":"2015-03-16","feature_name":["dst_coercions"],"issues":["[rust-lang/rust#18598](https://github.com/rust-lang/rust/issues/18598)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":982,"filename":"0982-dst-coercion.md","start_date":"2015-03-16","feature_name":["dst_coercions"],"issues":["[rust-lang/rust#18598](https://github.com/rust-lang/rust/issues/18598)"],"title":null,"teams":["Lang"],"tags":[]}

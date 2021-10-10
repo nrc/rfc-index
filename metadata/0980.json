@@ -1,1 +1,1 @@
-{"version":1,"number":980,"filename":"0980-read-exact.md","start_date":"2015-03-15","feature_name":["read_exact"],"issues":["[rust-lang/rust#27585](https://github.com/rust-lang/rust/issues/27585)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":980,"filename":"0980-read-exact.md","start_date":"2015-03-15","feature_name":["read_exact"],"issues":["[rust-lang/rust#27585](https://github.com/rust-lang/rust/issues/27585)"],"title":null,"teams":["Libs"],"tags":[]}

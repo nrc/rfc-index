@@ -1,1 +1,1 @@
-{"version":1,"number":3027,"filename":"3027-infallible-promotion.md","start_date":"2020-11-08","feature_name":["infallible_lifetime_extension"],"issues":["[rust-lang/rust#80619](https://github.com/rust-lang/rust/issues/80619)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":3027,"filename":"3027-infallible-promotion.md","start_date":"2020-11-08","feature_name":["infallible_lifetime_extension"],"issues":["[rust-lang/rust#80619](https://github.com/rust-lang/rust/issues/80619)"],"title":null,"teams":["Lang"],"tags":[]}

@@ -1,1 +1,1 @@
-{"version":1,"number":1192,"filename":"1192-inclusive-ranges.md","start_date":"2015-07-07","feature_name":["inclusive_range_syntax"],"issues":["[rust-lang/rust#28237](https://github.com/rust-lang/rust/issues/28237)"],"title":null,"tags":[{"Team":"Lang"},{"Team":"Libs"}]}
+{"version":1,"number":1192,"filename":"1192-inclusive-ranges.md","start_date":"2015-07-07","feature_name":["inclusive_range_syntax"],"issues":["[rust-lang/rust#28237](https://github.com/rust-lang/rust/issues/28237)"],"title":null,"teams":["Lang","Libs"],"tags":[]}

@@ -1,1 +1,1 @@
-{"version":1,"number":1152,"filename":"1152-slice-string-symmetry.md","start_date":"2015-06-06","feature_name":["slice_string_symmetry"],"issues":["[rust-lang/rust#26697](https://github.com/rust-lang/rust/issues/26697)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":1152,"filename":"1152-slice-string-symmetry.md","start_date":"2015-06-06","feature_name":["slice_string_symmetry"],"issues":["[rust-lang/rust#26697](https://github.com/rust-lang/rust/issues/26697)"],"title":null,"teams":["Libs"],"tags":[]}

@@ -1,1 +1,1 @@
-{"version":1,"number":1682,"filename":"1682-field-init-shorthand.md","start_date":"2016-07-18","feature_name":["field-init-shorthand"],"issues":["[rust-lang/rust#37340](https://github.com/rust-lang/rust/issues/37340)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":1682,"filename":"1682-field-init-shorthand.md","start_date":"2016-07-18","feature_name":["field-init-shorthand"],"issues":["[rust-lang/rust#37340](https://github.com/rust-lang/rust/issues/37340)"],"title":null,"teams":["Lang"],"tags":[]}

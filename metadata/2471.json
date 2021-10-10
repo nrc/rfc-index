@@ -1,1 +1,1 @@
-{"version":1,"number":2471,"filename":"2471-lint-test-inner-function.md","start_date":"2018-06-10","feature_name":["lint_test_inner_function"],"issues":["[rust-lang/rust#53911](https://github.com/rust-lang/rust/issues/53911)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2471,"filename":"2471-lint-test-inner-function.md","start_date":"2018-06-10","feature_name":["lint_test_inner_function"],"issues":["[rust-lang/rust#53911](https://github.com/rust-lang/rust/issues/53911)"],"title":null,"teams":["Lang"],"tags":[]}

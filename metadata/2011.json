@@ -1,1 +1,1 @@
-{"version":1,"number":2011,"filename":"2011-generic-assert.md","start_date":"2017-05-24","feature_name":["generic_assert"],"issues":["[rust-lang/rust#44838](https://github.com/rust-lang/rust/issues/44838)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":2011,"filename":"2011-generic-assert.md","start_date":"2017-05-24","feature_name":["generic_assert"],"issues":["[rust-lang/rust#44838](https://github.com/rust-lang/rust/issues/44838)"],"title":null,"teams":["Libs"],"tags":[]}

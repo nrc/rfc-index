@@ -1,1 +1,1 @@
-{"version":1,"number":873,"filename":"0873-type-macros.md","start_date":"2015-02-16","feature_name":["macros_in_type_positions"],"issues":["[rust-lang/rust#27245](https://github.com/rust-lang/rust/issues/27245)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":873,"filename":"0873-type-macros.md","start_date":"2015-02-16","feature_name":["macros_in_type_positions"],"issues":["[rust-lang/rust#27245](https://github.com/rust-lang/rust/issues/27245)"],"title":null,"teams":["Lang"],"tags":[]}

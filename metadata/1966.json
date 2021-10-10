@@ -1,1 +1,1 @@
-{"version":1,"number":1966,"filename":"1966-unsafe-pointer-reform.md","start_date":"2015-08-01","feature_name":["Unsafe","Pointer","~~Reform~~","Methods"],"issues":["[rust-lang/rust#43941](https://github.com/rust-lang/rust/issues/43941)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":1966,"filename":"1966-unsafe-pointer-reform.md","start_date":"2015-08-01","feature_name":["Unsafe","Pointer","~~Reform~~","Methods"],"issues":["[rust-lang/rust#43941](https://github.com/rust-lang/rust/issues/43941)"],"title":null,"teams":["Libs"],"tags":[]}

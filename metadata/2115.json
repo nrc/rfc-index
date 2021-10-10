@@ -1,1 +1,1 @@
-{"version":1,"number":2115,"filename":"2115-argument-lifetimes.md","start_date":"2017-08-17","feature_name":["argument_lifetimes"],"issues":["[rust-lang/rust#44524](https://github.com/rust-lang/rust/issues/44524)"],"title":null,"tags":[{"Team":"Lang"}]}
+{"version":1,"number":2115,"filename":"2115-argument-lifetimes.md","start_date":"2017-08-17","feature_name":["argument_lifetimes"],"issues":["[rust-lang/rust#44524](https://github.com/rust-lang/rust/issues/44524)"],"title":null,"teams":["Lang"],"tags":[]}

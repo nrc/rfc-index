@@ -1,1 +1,1 @@
-{"version":1,"number":1174,"filename":"1174-into-raw-fd-socket-handle-traits.md","start_date":"2015-06-24","feature_name":["into-raw-fd-socket-handle-traits"],"issues":["[rust-lang/rust#27062](https://github.com/rust-lang/rust/issues/27062)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":1174,"filename":"1174-into-raw-fd-socket-handle-traits.md","start_date":"2015-06-24","feature_name":["into-raw-fd-socket-handle-traits"],"issues":["[rust-lang/rust#27062](https://github.com/rust-lang/rust/issues/27062)"],"title":null,"teams":["Libs"],"tags":[]}

@@ -1,24 +1,14 @@
 // TODO
 // CLI
-//   add/remove/replace tag for multiple or single RFC
 //   scan metadata for new
 //     tags
-//   update from scan
-//     specific RFC
-//     update metadata as well as replace
-//   check
-//     number == filename
-//     tag typos
-//     compare with scan
-//     date formats
-//     subcommands - check for missing title, tags
 
 use crate::{
     errors::{Error, Result},
     github::{get_merged_rfc_metadata, update_from_pr},
     metadata::{
         all_metadata, all_metadata_numbers, delete_metadata, metadata_exists, open_metadata,
-        save_metadata, RfcMetadata, Tag,
+        save_metadata, RfcMetadata,
     },
 };
 use std::{process, str::FromStr};
@@ -62,6 +52,7 @@ fn main() {
         Command::Generate => run_generate(),
         Command::Query { tag } => run_query(tag),
         Command::Tag { numbers, add, scan } => run_tag(numbers, add, scan),
+        Command::Migrate => run_migrate(),
     }
 }
 
@@ -133,6 +124,8 @@ enum Command {
         #[structopt(long)]
         scan: Option<Option<TagScanFlags>>,
     },
+    /// Migrate metadata between versions.
+    Migrate,
 }
 
 #[derive(StructOpt)]
@@ -147,7 +140,7 @@ struct AddFlags {
     issues: Option<String>,
     #[structopt(long)]
     title: Option<String>,
-    // TODO tags
+    // TODO tags/teams
 }
 
 #[derive(StructOpt)]
@@ -162,7 +155,7 @@ struct SetFlags {
     issues: Option<String>,
     #[structopt(long)]
     title: Option<String>,
-    // TODO tags
+    // TODO tags/teams
 }
 
 #[derive(StructOpt)]
@@ -177,6 +170,8 @@ struct GetFlags {
     issues: bool,
     #[structopt(long)]
     title: bool,
+    #[structopt(long)]
+    teams: bool,
     #[structopt(long)]
     tags: bool,
 }
@@ -413,6 +408,7 @@ fn run_get(number: u64, verbose: bool, flags: GetFlags) {
     render_vec!(feature_name);
     render_vec!(issues);
     render_opt!(title);
+    render_vec!(teams);
     render_vec!(tags);
 }
 
@@ -471,8 +467,8 @@ fn run_stats() {
 
     let total = metadata.len();
     let title = metadata.iter().filter(|m| m.title.is_some()).count();
-    let one_tag = metadata.iter().filter(|m| m.tags.len() >= 1).count();
-    let two_tags = metadata.iter().filter(|m| m.tags.len() >= 2).count();
+    let one_tag = metadata.iter().filter(|m| !m.tags.is_empty()).count();
+    let teams = metadata.iter().filter(|m| !m.teams.is_empty()).count();
 
     println!("Total RFCs indexed: {}", total);
     println!(
@@ -481,14 +477,14 @@ fn run_stats() {
         (title as f64 / total as f64) * 100.0
     );
     println!(
+        "RFCs with at least one team: {} ({:.1}%)",
+        teams,
+        (teams as f64 / total as f64) * 100.0
+    );
+    println!(
         "RFCs with at least one tag: {} ({:.1}%)",
         one_tag,
         (one_tag as f64 / total as f64) * 100.0
-    );
-    println!(
-        "RFCs with at least two tags: {} ({:.1}%)",
-        two_tags,
-        (two_tags as f64 / total as f64) * 100.0
     );
 }
 
@@ -516,7 +512,7 @@ fn run_query(tag: Option<Option<String>>) {
             Some(tag) => {
                 metadata = metadata
                     .into_iter()
-                    .filter(|d| d.tags.contains(&tag.parse::<Tag>().unwrap()))
+                    .filter(|d| d.tags.contains(&tag))
                     .collect()
             }
             None => metadata = metadata.into_iter().filter(|d| d.tags.is_empty()).collect(),
@@ -550,7 +546,6 @@ fn tag(
         numbers = all_metadata_numbers()?;
     }
 
-    let add = add.map(|a| a.parse::<Tag>()).transpose()?;
     let scan = scan.map(|s| s.unwrap_or_default());
 
     // eprintln!("info: tagging {}", numbers.len());
@@ -575,6 +570,16 @@ fn tag(
     }
 
     Ok(())
+}
+
+fn run_migrate() {
+    let _metadata = match all_metadata() {
+        Ok(m) => m,
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+    };
 }
 
 #[cfg(test)]

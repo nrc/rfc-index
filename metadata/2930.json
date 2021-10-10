@@ -1,1 +1,1 @@
-{"version":1,"number":2930,"filename":"2930-read-buf.md","start_date":"2020/05/18","feature_name":["read_buf"],"issues":["[rust-lang/rust#78485](https://github.com/rust-lang/rust/issues/78485)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":2930,"filename":"2930-read-buf.md","start_date":"2020/05/18","feature_name":["read_buf"],"issues":["[rust-lang/rust#78485](https://github.com/rust-lang/rust/issues/78485)"],"title":null,"teams":["Libs"],"tags":[]}

@@ -1,7 +1,7 @@
 use crate::{
     errors::Result,
     github::get_merged_rfc_data,
-    metadata::{open_metadata, Tag, Team},
+    metadata::{open_metadata, Team},
 };
 use handlebars::Handlebars;
 use mdbook::utils::render_markdown;
@@ -83,6 +83,7 @@ pub fn generate() -> Result<()> {
             number,
             title,
             url,
+            teams: metadata.teams,
             tags: metadata.tags,
         };
         elements.push(element);
@@ -93,7 +94,7 @@ pub fn generate() -> Result<()> {
             name: "core".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.contains(&Tag::Team(Team::Core)))
+                .filter(|d| d.teams.contains(&Team::Core))
                 .cloned()
                 .collect(),
         },
@@ -101,7 +102,7 @@ pub fn generate() -> Result<()> {
             name: "lang".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.contains(&Tag::Team(Team::Lang)))
+                .filter(|d| d.teams.contains(&Team::Lang))
                 .cloned()
                 .collect(),
         },
@@ -109,7 +110,7 @@ pub fn generate() -> Result<()> {
             name: "libs".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.contains(&Tag::Team(Team::Libs)))
+                .filter(|d| d.teams.contains(&Team::Libs))
                 .cloned()
                 .collect(),
         },
@@ -117,7 +118,7 @@ pub fn generate() -> Result<()> {
             name: "compiler".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.contains(&Tag::Team(Team::Compiler)))
+                .filter(|d| d.teams.contains(&Team::Compiler))
                 .cloned()
                 .collect(),
         },
@@ -125,7 +126,7 @@ pub fn generate() -> Result<()> {
             name: "tools".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.contains(&Tag::Team(Team::Tools)))
+                .filter(|d| d.teams.contains(&Team::Tools))
                 .cloned()
                 .collect(),
         },
@@ -133,7 +134,7 @@ pub fn generate() -> Result<()> {
             name: "docs".to_owned(),
             rfcs: elements
                 .iter()
-                .filter(|d| d.tags.contains(&Tag::Team(Team::Docs)))
+                .filter(|d| d.teams.contains(&Team::Docs))
                 .cloned()
                 .collect(),
         },
@@ -176,7 +177,8 @@ struct IndexElement {
     number: String,
     title: String,
     url: String,
-    tags: Vec<Tag>,
+    teams: Vec<Team>,
+    tags: Vec<String>,
 }
 
 #[derive(Serialize, Clone)]

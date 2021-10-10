@@ -20,7 +20,8 @@ pub struct RfcMetadata {
     pub feature_name: Vec<String>,
     pub issues: Vec<String>,
     pub title: Option<String>,
-    pub tags: Vec<Tag>,
+    pub teams: Vec<Team>,
+    pub tags: Vec<String>,
 }
 
 impl RfcMetadata {
@@ -33,6 +34,7 @@ impl RfcMetadata {
             feature_name: Vec::new(),
             issues: Vec::new(),
             title: None,
+            teams: Vec::new(),
             tags: Vec::new(),
         }
     }
@@ -58,44 +60,6 @@ impl Ord for RfcMetadata {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-pub enum Tag {
-    Team(Team),
-    Topic(Topic),
-    Custom(String),
-    /// Never implemented and not intended to be so.
-    Retired,
-    Superseded,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-pub enum Topic {
-    Lang(LangTopic),
-    Libs(LibsTopic),
-    Core(CoreTopic),
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-pub enum LangTopic {
-    Traits,
-    TraitObjects,
-    Dsts,
-    DataTypes,
-    Attributes,
-    Generics,
-    Syntax,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-pub enum CoreTopic {
-    Processes,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-pub enum LibsTopic {
-    Std,
-}
-
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 pub enum Team {
     Lang,
@@ -106,17 +70,17 @@ pub enum Team {
     Docs,
 }
 
-impl FromStr for Tag {
+impl FromStr for Team {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Tag> {
+    fn from_str(s: &str) -> Result<Team> {
         match s {
-            "t-lang" => Ok(Tag::Team(Team::Lang)),
-            "t-libs" => Ok(Tag::Team(Team::Libs)),
-            "t-core" => Ok(Tag::Team(Team::Core)),
-            "t-tools" => Ok(Tag::Team(Team::Tools)),
-            "t-compiler" => Ok(Tag::Team(Team::Compiler)),
-            "t-docs" => Ok(Tag::Team(Team::Docs)),
+            "t-lang" => Ok(Team::Lang),
+            "t-libs" => Ok(Team::Libs),
+            "t-core" => Ok(Team::Core),
+            "t-tools" => Ok(Team::Tools),
+            "t-compiler" => Ok(Team::Compiler),
+            "t-docs" => Ok(Team::Docs),
             _ => Err(Error::ParseTag(s.to_owned())),
         }
     }

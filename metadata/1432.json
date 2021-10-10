@@ -1,1 +1,1 @@
-{"version":1,"number":1432,"filename":"1432-replace-slice.md","start_date":"2015-12-28","feature_name":["splice"],"issues":["[rust-lang/rust#32310](https://github.com/rust-lang/rust/issues/32310)"],"title":null,"tags":[{"Team":"Libs"}]}
+{"version":1,"number":1432,"filename":"1432-replace-slice.md","start_date":"2015-12-28","feature_name":["splice"],"issues":["[rust-lang/rust#32310](https://github.com/rust-lang/rust/issues/32310)"],"title":null,"teams":["Libs"],"tags":[]}
