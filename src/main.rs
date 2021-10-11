@@ -1,8 +1,3 @@
-// TODO
-// CLI
-//   scan metadata for new
-//     tags
-
 use crate::{
     errors::{Error, Result},
     github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr, UpdateOptions},
@@ -56,7 +51,9 @@ fn main() {
             add,
             scan,
             init,
-        } => run_tag(numbers, add, scan, init),
+            remove,
+            replace,
+        } => run_tag(numbers, add, scan, init, remove, replace),
         Command::Migrate => run_migrate(),
     }
 }
@@ -131,6 +128,12 @@ enum Command {
         /// Initialise tag metadata.
         #[structopt(long)]
         init: bool,
+        /// Remove a tag from the specified RFCs.
+        #[structopt(long)]
+        remove: Option<String>,
+        /// Replace a tag from the specified RFCs, use syntax: `old_name/new_name`.
+        #[structopt(long)]
+        replace: Option<String>,
     },
     /// Migrate metadata between versions.
     Migrate,
@@ -536,8 +539,15 @@ fn run_query(tag: Option<Option<String>>) {
     println!();
 }
 
-fn run_tag(numbers: Vec<u64>, add: Option<String>, scan: Option<Option<TagScanFlags>>, init: bool) {
-    match tag(numbers, add, scan, init) {
+fn run_tag(
+    numbers: Vec<u64>,
+    add: Option<String>,
+    scan: Option<Option<TagScanFlags>>,
+    init: bool,
+    remove: Option<String>,
+    replace: Option<String>,
+) {
+    match tag(numbers, add, scan, init, remove, replace) {
         Err(e) => {
             eprintln!("Error: {:?}", e);
             process::exit(ExitCode::Other as i32);
@@ -551,6 +561,8 @@ fn tag(
     add: Option<String>,
     scan: Option<Option<TagScanFlags>>,
     init: bool,
+    remove: Option<String>,
+    replace: Option<String>,
 ) -> Result<()> {
     if init {
         return tag_init();
@@ -574,6 +586,30 @@ fn tag(
         if let Some(add) = &add {
             if !metadata.tags.contains(&add) {
                 metadata.tags.push(add.clone());
+            }
+        }
+
+        if let Some(remove) = &remove {
+            metadata.tags.retain(|t| t != remove);
+        }
+
+        if let Some(replace) = &replace {
+            let mut splits = replace.split('/');
+            let from = splits
+                .next()
+                .expect("No tag to replace, use syntax `from/to`");
+            let to = splits
+                .next()
+                .expect("No tag to replace with, use syntax `from/to`");
+            assert!(
+                splits.next().is_none(),
+                "Too many arguments to `tag --replace`"
+            );
+
+            for t in &mut metadata.tags {
+                if t == from {
+                    *t = to.to_owned();
+                }
             }
         }
 
