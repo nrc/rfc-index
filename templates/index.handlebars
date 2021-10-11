@@ -14,33 +14,58 @@
     <div class="body-text">
       <p class="blurb">Changes to <a href="https://www.rust-lang.org/" target="_blank">Rust</a> are made through the RFC (request for comments) <a href="https://github.com/rust-lang/rfcs#readme" target="_blank">process</a>. Accepted RFCs are some of the best reference material available for understanding Rust in depth. However, it can be difficult to find the information you need. This website is an attempt to rectify that by providing an index and classification of RFCs.</p>
       <p class="blurb">The canonical record of RFCs is the <a href="https://github.com/rust-lang/rfcs" target="_blank">RFC repo</a>. You might also want to browse the <a href="https://rust-lang.github.io/rfcs" target="_blank">RFC book</a>. The source code and metadata for this website is open source and developed on <a href="https://github.com/nrc/rfc-index" target="_blank">GitHub</a>.</p>
-      <ul class="category-list">
-        {{#each teams}}
-        <li><a href="#" onclick="showList(this); return false;" name="{{name}}">{{name}}</a></li>
-        {{/each}}
-      </ul>
-      <ul class="rfc-list" id="rfc-list">
-      </ul>
+      <div class="column-container">
+        <div class="column-box categories">
+          <a href="#"  onclick="showAll(); return false;" id="all" class="category tier-0 selected">all</a>
+          {{#each teams}}
+          <a href="#" onclick="showTeam(this); return false;" id="{{name}}" class="category tier-1">{{name}}</a>
+            {{#each tags}}
+            <a href="#" onclick="showTag(this); return false;" id="{{../name}}-{{this}}" class="category tier-2">{{this}}</a>
+            {{/each}}
+          {{/each}}
+          <a href="#" onclick="showTeam(this); return false;" id="unclassified" class="category tier-1">unclassified</a>
+        </div>
+        <div class="column-box rfcs">
+          <ul class="rfc-list" id="rfc-list">
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
   <div class="footer">Copyright 2021 Nick Cameron.</div>
 </body>
 <script type="text/javascript">
-  let data = {
-    {{#each teams}}
-    {{name}}: [
-      {{#each rfcs}}
-      { url: "{{url}}", number: "{{number}}", title: "{{{title}}}" },
-      {{/each}}
-    ],
+  let data = [
+    {{#each rfcs}}
+    { url: "{{url}}", number: "{{number}}", title: "{{{title}}}", teams: [{{#each teams}}"{{this}}",{{/each}}], tags: [{{#each tags}}"{{this}}",{{/each}}] },
     {{/each}}
-  };
+  ];
 
-  function showList(ev) {
-    let team = ev.name;
+  showAll();
+
+  function reset() {
+    // unhighlight and hide tags
+    let tags = document.getElementsByClassName("tier-2");
+    for (const tag of tags) {
+      tag.classList.remove("selected");
+      tag.style.display = "none"
+    }
+    // unhighlight teams
+    let teams = document.getElementsByClassName("tier-1");
+    for (const team of teams) {
+      team.classList.remove("selected");
+    }
+    // hide RFCs
     let list = document.getElementById('rfc-list');
     list.innerHTML = '';
-    for (rfc of data[team]) {
+  }
+
+  function showAll() {
+    reset();
+
+    // show all RFCs
+    let list = document.getElementById('rfc-list');
+    for (const rfc of data) {
       let li = document.createElement('li');
       let a = document.createElement('a');
       a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
@@ -49,7 +74,69 @@
       list.appendChild(li)
     }
   }
-  // TODO on click for team list
-  // <li><a href="url">number title</a></li>
+
+  function showTeam(ev) {
+    let team = ev.id;
+
+    reset();
+
+    // show tags
+    let tags = document.getElementsByClassName("tier-2");
+    for (const tag of tags) {
+      if (tag.id.startsWith(team)) {
+        tag.style.display = "block"
+      }
+    }
+
+    // show RFCs
+    let list = document.getElementById('rfc-list');
+    for (const rfc of data) {
+      if ((team == "unclassified" && rfc.teams.length == 0) || (team != "unclassified" && rfc.teams.includes(team))) {
+        let li = document.createElement('li');
+        let a = document.createElement('a');
+        a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
+        a.href = rfc.url;
+        li.appendChild(a);
+        list.appendChild(li)
+      }
+    }
+
+    // highlight team
+    let team_link = document.getElementById(team);
+    team_link.classList.add("selected");
+  }
+
+  function showTag(ev) {
+    let id = ev.id;
+    let idParts = id.split('-');
+    let team = idParts[0];
+    let tag = idParts[1];
+
+    // unhighlight tags
+    let tags = document.getElementsByClassName("tier-2");
+    for (const tag of tags) {
+      tag.classList.remove("selected");
+    }
+
+    // highlight tag
+    let team_link = document.getElementById(id);
+    team_link.classList.add("selected");
+
+    // hide RFCs
+    let list = document.getElementById('rfc-list');
+    list.innerHTML = '';
+
+    // show RFCs
+    for (const rfc of data) {
+      if (rfc.teams.includes(team) && rfc.tags.includes(tag)) {
+        let li = document.createElement('li');
+        let a = document.createElement('a');
+        a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
+        a.href = rfc.url;
+        li.appendChild(a);
+        list.appendChild(li)
+      }
+    }
+  }
 </script>
 </html>

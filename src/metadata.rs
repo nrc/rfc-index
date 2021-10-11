@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     cmp::Ordering,
     collections::HashMap,
+    fmt,
     fs::{self, File},
     io::{Read, Write},
     path::{Path, PathBuf},
@@ -84,6 +85,19 @@ impl FromStr for Team {
             "t-compiler" => Ok(Team::Compiler),
             "t-docs" => Ok(Team::Docs),
             _ => Err(Error::ParseTag(s.to_owned())),
+        }
+    }
+}
+
+impl fmt::Display for Team {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Team::Lang => write!(f, "lang"),
+            Team::Libs => write!(f, "libs"),
+            Team::Core => write!(f, "core"),
+            Team::Tools => write!(f, "tools"),
+            Team::Compiler => write!(f, "compiler"),
+            Team::Docs => write!(f, "docs"),
         }
     }
 }

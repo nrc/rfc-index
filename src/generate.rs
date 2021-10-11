@@ -1,7 +1,7 @@
 use crate::{
     errors::Result,
     github::get_merged_rfc_data,
-    metadata::{open_metadata, Team},
+    metadata::{open_metadata, read_tag_metadata, Team},
 };
 use handlebars::Handlebars;
 use mdbook::utils::render_markdown;
@@ -51,8 +51,9 @@ pub fn generate() -> Result<()> {
 
     let mut rfc_data = get_merged_rfc_data()?;
     rfc_data.sort();
+    let tag_metadata = read_tag_metadata()?;
 
-    let mut elements = Vec::with_capacity(rfc_data.len());
+    let mut rfcs = Vec::with_capacity(rfc_data.len());
 
     for rfc in rfc_data {
         let metadata = open_metadata(rfc.number)?;
@@ -83,75 +84,45 @@ pub fn generate() -> Result<()> {
             number,
             title,
             url,
-            teams: metadata.teams,
-            tags: metadata.tags,
+            teams: metadata.teams.iter().map(|t| t.to_string()).collect(),
+            tags: metadata.tags.iter().map(trim_prefix).collect(),
         };
-        elements.push(element);
+        rfcs.push(element);
+    }
+
+    fn sort(input: &Vec<String>) -> Vec<String> {
+        let mut out: Vec<String> = input.iter().map(trim_prefix).collect();
+        out.sort();
+        out
     }
 
     let teams = vec![
         TeamTemplateData {
             name: "core".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.contains(&Team::Core))
-                .cloned()
-                .collect(),
+            tags: sort(&tag_metadata.by_team[&Team::Core]),
         },
         TeamTemplateData {
             name: "lang".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.contains(&Team::Lang))
-                .cloned()
-                .collect(),
+            tags: sort(&tag_metadata.by_team[&Team::Lang]),
         },
         TeamTemplateData {
             name: "libs".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.contains(&Team::Libs))
-                .cloned()
-                .collect(),
+            tags: sort(&tag_metadata.by_team[&Team::Libs]),
         },
         TeamTemplateData {
             name: "compiler".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.contains(&Team::Compiler))
-                .cloned()
-                .collect(),
+            tags: sort(&tag_metadata.by_team[&Team::Compiler]),
         },
         TeamTemplateData {
             name: "tools".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.contains(&Team::Tools))
-                .cloned()
-                .collect(),
+            tags: sort(&tag_metadata.by_team[&Team::Tools]),
         },
         TeamTemplateData {
             name: "docs".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.contains(&Team::Docs))
-                .cloned()
-                .collect(),
-        },
-        TeamTemplateData {
-            name: "unclassified".to_owned(),
-            rfcs: elements
-                .iter()
-                .filter(|d| d.teams.is_empty())
-                .cloned()
-                .collect(),
-        },
-        TeamTemplateData {
-            name: "all".to_owned(),
-            rfcs: elements,
+            tags: sort(&tag_metadata.by_team[&Team::Docs]),
         },
     ];
-    let html = handlebars.render("index", &IndexTemplateData { teams })?;
+    let html = handlebars.render("index", &IndexTemplateData { rfcs, teams })?;
     let mut dest = PathBuf::new();
     dest.push(OUT_DIR);
     dest.push("index.html");
@@ -161,15 +132,24 @@ pub fn generate() -> Result<()> {
     Ok(())
 }
 
+fn trim_prefix(t: &String) -> String {
+    if t.starts_with("A-") || t.starts_with("T-") {
+        t[2..].to_lowercase().to_owned()
+    } else {
+        t.to_lowercase().to_owned()
+    }
+}
+
 #[derive(Serialize, Clone)]
 struct IndexTemplateData {
+    rfcs: Vec<IndexElement>,
     teams: Vec<TeamTemplateData>,
 }
 
 #[derive(Serialize, Clone)]
 struct TeamTemplateData {
     name: String,
-    rfcs: Vec<IndexElement>,
+    tags: Vec<String>,
 }
 
 #[derive(Serialize, Clone)]
@@ -177,7 +157,7 @@ struct IndexElement {
     number: String,
     title: String,
     url: String,
-    teams: Vec<Team>,
+    teams: Vec<String>,
     tags: Vec<String>,
 }
 
