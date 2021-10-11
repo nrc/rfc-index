@@ -1,6 +1,6 @@
 use crate::{
     errors::{Error, Result},
-    metadata::{RfcMetadata, Team, TeamTags},
+    metadata::{RfcMetadata, TagMetadata, Team, TeamTags},
     parse_multiple,
 };
 use octocrab::{models::pulls::PullRequest, OctocrabBuilder};
@@ -198,25 +198,65 @@ async fn get_pr(number: u64) -> Result<PullRequest> {
     Ok(pr)
 }
 
-pub fn update_from_pr(metadata: &mut RfcMetadata) -> Result<()> {
+pub struct UpdateOptions {
+    pub tags: bool,
+    pub teams: bool,
+}
+
+impl UpdateOptions {
+    pub fn all() -> UpdateOptions {
+        UpdateOptions {
+            tags: true,
+            teams: true,
+        }
+    }
+}
+
+pub fn update_from_pr(
+    metadata: &mut RfcMetadata,
+    tag_metadata: &TagMetadata,
+    opts: UpdateOptions,
+) -> Result<()> {
+    if !opts.tags && !opts.teams {
+        return Ok(());
+    }
+
     Runtime::new().unwrap().block_on(async {
         let pr = get_pr(metadata.number).await?;
 
         match &pr.labels {
             Some(l) => {
-                let teams = l.iter().filter_map(|l| match &*l.name {
-                    LABEL_T_LANG => Some(Team::Lang),
-                    LABEL_T_LIBS | LABEL_T_LIBS_API => Some(Team::Libs),
-                    LABEL_T_CORE => Some(Team::Core),
-                    LABEL_T_COMPILER => Some(Team::Compiler),
-                    LABEL_T_DEV_TOOLS | LABEL_T_RUSTDOC | LABEL_T_CARGO => Some(Team::Tools),
-                    LABEL_T_DOC => Some(Team::Docs),
-                    _ => None,
-                });
+                if opts.teams {
+                    // Teams
+                    let teams = l.iter().filter_map(|l| match &*l.name {
+                        LABEL_T_LANG => Some(Team::Lang),
+                        LABEL_T_LIBS | LABEL_T_LIBS_API => Some(Team::Libs),
+                        LABEL_T_CORE => Some(Team::Core),
+                        LABEL_T_COMPILER => Some(Team::Compiler),
+                        LABEL_T_DEV_TOOLS | LABEL_T_RUSTDOC | LABEL_T_CARGO => Some(Team::Tools),
+                        LABEL_T_DOC => Some(Team::Docs),
+                        _ => None,
+                    });
 
-                for team in teams {
-                    if !metadata.teams.contains(&team) {
-                        metadata.teams.push(team);
+                    for team in teams {
+                        if !metadata.teams.contains(&team) {
+                            metadata.teams.push(team);
+                        }
+                    }
+
+                    // TODO if no team, try and infer it from tags
+                }
+
+                if opts.tags {
+                    // Tags
+                    for l in l {
+                        let l = &l.name;
+                        if tag_metadata.by_tag.contains_key(l) {
+                            let l = l.to_owned();
+                            if !metadata.tags.contains(&l) {
+                                metadata.tags.push(l);
+                            }
+                        }
                     }
                 }
             }

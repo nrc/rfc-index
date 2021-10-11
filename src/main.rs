@@ -5,10 +5,10 @@
 
 use crate::{
     errors::{Error, Result},
-    github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr},
+    github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr, UpdateOptions},
     metadata::{
         all_metadata, all_metadata_numbers, delete_metadata, metadata_exists, open_metadata,
-        save_metadata, write_tag_metadata, RfcMetadata,
+        read_tag_metadata, save_metadata, write_tag_metadata, RfcMetadata,
     },
 };
 use std::{process, str::FromStr};
@@ -450,11 +450,12 @@ fn run_scan_merged(force: bool) {
 
 fn scan_merged(force: bool) -> Result<()> {
     let gh_data = get_merged_rfc_metadata()?;
+    let tag_metadata = read_tag_metadata()?;
     for datum in gh_data {
         let number = datum.number()?;
         if force || metadata_exists(number).is_err() {
             let mut metadata: RfcMetadata = datum.try_into()?;
-            update_from_pr(&mut metadata)?;
+            update_from_pr(&mut metadata, &tag_metadata, UpdateOptions::all())?;
             save_metadata(&metadata)?;
         }
         // Progress indicator
@@ -561,6 +562,12 @@ fn tag(
 
     let scan = scan.map(|s| s.unwrap_or_default());
 
+    let tag_metadata = if scan.is_some() {
+        Some(read_tag_metadata()?)
+    } else {
+        None
+    };
+
     // eprintln!("info: tagging {}", numbers.len());
     for n in numbers {
         let mut metadata = open_metadata(n)?;
@@ -571,9 +578,12 @@ fn tag(
         }
 
         if let Some(scan) = scan {
-            if metadata.tags.is_empty() || scan == TagScanFlags::All {
-                update_from_pr(&mut metadata)?;
-            }
+            let opts = UpdateOptions {
+                tags: metadata.tags.is_empty() || scan == TagScanFlags::All,
+                teams: metadata.teams.is_empty() || scan == TagScanFlags::All,
+            };
+
+            update_from_pr(&mut metadata, tag_metadata.as_ref().unwrap(), opts)?;
         }
 
         save_metadata(&metadata)?;

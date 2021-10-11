@@ -95,8 +95,8 @@ pub struct TeamTags {
 }
 
 pub struct TagMetadata {
-    by_tag: HashMap<String, Vec<Team>>,
-    by_team: HashMap<Team, Vec<String>>,
+    pub by_tag: HashMap<String, Vec<Team>>,
+    pub by_team: HashMap<Team, Vec<String>>,
 }
 
 pub fn read_tag_metadata() -> Result<TagMetadata> {
