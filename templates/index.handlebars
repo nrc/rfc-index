@@ -108,9 +108,8 @@
 
   function showTag(ev) {
     let id = ev.id;
-    let idParts = id.split('-');
-    let team = idParts[0];
-    let tag = idParts[1];
+    let team = id.split('-')[0];
+    let tag = id.substring(team.length + 1);
 
     // unhighlight tags
     let tags = document.getElementsByClassName("tier-2");
