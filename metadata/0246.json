@@ -1,1 +1,1 @@
-{"version":1,"number":246,"filename":"0246-const-vs-static.md","start_date":"2014-08-08","feature_name":[],"issues":["[rust-lang/rust#17718](https://github.com/rust-lang/rust/issues/17718)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":246,"filename":"0246-const-vs-static.md","start_date":"2014-08-08","feature_name":[],"issues":["[rust-lang/rust#17718](https://github.com/rust-lang/rust/issues/17718)"],"title":null,"teams":[],"tags":["A-const","A-static"]}

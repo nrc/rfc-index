@@ -1,1 +1,1 @@
-{"version":1,"number":1522,"filename":"1522-conservative-impl-trait.md","start_date":"2016-01-31","feature_name":["conservative_impl_trait"],"issues":["[rust-lang/rust#34511](https://github.com/rust-lang/rust/issues/34511)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":1522,"filename":"1522-conservative-impl-trait.md","start_date":"2016-01-31","feature_name":["conservative_impl_trait"],"issues":["[rust-lang/rust#34511](https://github.com/rust-lang/rust/issues/34511)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-traits","A-typesystem"]}

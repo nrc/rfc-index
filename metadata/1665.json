@@ -1,1 +1,1 @@
-{"version":1,"number":1665,"filename":"1665-windows-subsystem.md","start_date":"2016-07-03","feature_name":["Windows","Subsystem"],"issues":["[rust-lang/rust#37499](https://github.com/rust-lang/rust/issues/37499)"],"title":null,"teams":["Tools"],"tags":[]}
+{"version":1,"number":1665,"filename":"1665-windows-subsystem.md","start_date":"2016-07-03","feature_name":["Windows","Subsystem"],"issues":["[rust-lang/rust#37499](https://github.com/rust-lang/rust/issues/37499)"],"title":null,"teams":["Tools"],"tags":["A-platform","A-attributes","A-linkage"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":1419,"filename":"1419-slice-copy.md","start_date":"(fill me in with today's date, YYYY-MM-DD)","feature_name":["slice\\_copy\\_from"],"issues":["[rust-lang/rust#31755](https://github.com/rust-lang/rust/issues/31755)"],"title":null,"teams":["Libs"],"tags":[]}
+{"version":1,"number":1419,"filename":"1419-slice-copy.md","start_date":"(fill me in with today's date, YYYY-MM-DD)","feature_name":["slice\\_copy\\_from"],"issues":["[rust-lang/rust#31755](https://github.com/rust-lang/rust/issues/31755)"],"title":null,"teams":["Libs"],"tags":["A-slice"]}

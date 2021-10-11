@@ -1,1 +1,1 @@
-{"version":1,"number":2412,"filename":"2412-optimize-attr.md","start_date":"2018-03-26","feature_name":["optimize_attr"],"issues":["[rust-lang/rust#54882](https://github.com/rust-lang/rust/issues/54882)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2412,"filename":"2412-optimize-attr.md","start_date":"2018-03-26","feature_name":["optimize_attr"],"issues":["[rust-lang/rust#54882](https://github.com/rust-lang/rust/issues/54882)"],"title":null,"teams":["Lang"],"tags":["A-optimization","A-attributes"]}

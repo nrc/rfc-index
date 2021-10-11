@@ -1,1 +1,1 @@
-{"version":1,"number":212,"filename":"0212-restore-int-fallback.md","start_date":"2014-09-03","feature_name":[],"issues":["[rust-lang/rust#16968](https://github.com/rust-lang/rust/issues/16968)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":212,"filename":"0212-restore-int-fallback.md","start_date":"2014-09-03","feature_name":[],"issues":["[rust-lang/rust#16968](https://github.com/rust-lang/rust/issues/16968)"],"title":null,"teams":[],"tags":["A-typesystem","A-primitive","A-inference"]}

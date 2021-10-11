@@ -1,1 +1,1 @@
-{"version":1,"number":736,"filename":"0736-privacy-respecting-fru.md","start_date":"2015-01-26","feature_name":[],"issues":["[rust-lang/rust#21407](https://github.com/rust-lang/rust/issues/21407)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":736,"filename":"0736-privacy-respecting-fru.md","start_date":"2015-01-26","feature_name":[],"issues":["[rust-lang/rust#21407](https://github.com/rust-lang/rust/issues/21407)"],"title":null,"teams":[],"tags":["A-typesystem","A-expressions","A-update-syntax","A-privacy"]}

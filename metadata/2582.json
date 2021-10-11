@@ -1,1 +1,1 @@
-{"version":1,"number":2582,"filename":"2582-raw-reference-mir-operator.md","start_date":"2018-11-01","feature_name":["raw_ref_op"],"issues":["[rust-lang/rust#64490](https://github.com/rust-lang/rust/issues/64490)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2582,"filename":"2582-raw-reference-mir-operator.md","start_date":"2018-11-01","feature_name":["raw_ref_op"],"issues":["[rust-lang/rust#64490](https://github.com/rust-lang/rust/issues/64490)"],"title":null,"teams":["Lang"],"tags":["A-unsafe","A-typesystem","A-machine"]}

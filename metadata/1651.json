@@ -1,1 +1,1 @@
-{"version":1,"number":1651,"filename":"1651-movecell.md","start_date":"2016-06-15","feature_name":["move_cell"],"issues":["[rust-lang/rust#39264](https://github.com/rust-lang/rust/issues/39264)"],"title":null,"teams":["Lang","Libs"],"tags":[]}
+{"version":1,"number":1651,"filename":"1651-movecell.md","start_date":"2016-06-15","feature_name":["move_cell"],"issues":["[rust-lang/rust#39264](https://github.com/rust-lang/rust/issues/39264)"],"title":null,"teams":["Lang","Libs"],"tags":["A-machine","A-cell"]}

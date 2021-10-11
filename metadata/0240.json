@@ -1,1 +1,1 @@
-{"version":1,"number":240,"filename":"0240-unsafe-api-location.md","start_date":"2014-10-07","feature_name":[],"issues":["[rust-lang/rust#17863](https://github.com/rust-lang/rust/issues/17863)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":240,"filename":"0240-unsafe-api-location.md","start_date":"2014-10-07","feature_name":[],"issues":["[rust-lang/rust#17863](https://github.com/rust-lang/rust/issues/17863)"],"title":null,"teams":[],"tags":["A-unsafe","A-convention"]}

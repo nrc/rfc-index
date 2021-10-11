@@ -1,1 +1,1 @@
-{"version":1,"number":202,"filename":"0202-subslice-syntax-change.md","start_date":"2014-08-15","feature_name":[],"issues":["[rust-lang/rust#16967](https://github.com/rust-lang/rust/issues/16967)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":202,"filename":"0202-subslice-syntax-change.md","start_date":"2014-08-15","feature_name":[],"issues":["[rust-lang/rust#16967](https://github.com/rust-lang/rust/issues/16967)"],"title":null,"teams":[],"tags":["A-syntax","A-slice","A-patterns","A-array"]}

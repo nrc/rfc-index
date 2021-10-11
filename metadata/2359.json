@@ -1,1 +1,1 @@
-{"version":1,"number":2359,"filename":"2359-subslice-pattern-syntax.md","start_date":"2018-03-08","feature_name":["slice_patterns"],"issues":["[rust-lang/rust#62254](https://github.com/rust-lang/rust/issues/62254)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2359,"filename":"2359-subslice-pattern-syntax.md","start_date":"2018-03-08","feature_name":["slice_patterns"],"issues":["[rust-lang/rust#62254](https://github.com/rust-lang/rust/issues/62254)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-slice","A-patterns"]}

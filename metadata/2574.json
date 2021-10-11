@@ -1,1 +1,1 @@
-{"version":1,"number":2574,"filename":"2574-simd-ffi.md","start_date":"2018-10-12","feature_name":["simd_ffi"],"issues":["[rust-lang/rust#63068](https://github.com/rust-lang/rust/issues/63068)"],"title":null,"teams":["Lang","Compiler"],"tags":[]}
+{"version":1,"number":2574,"filename":"2574-simd-ffi.md","start_date":"2018-10-12","feature_name":["simd_ffi"],"issues":["[rust-lang/rust#63068](https://github.com/rust-lang/rust/issues/63068)"],"title":null,"teams":["Lang","Compiler"],"tags":["A-typesystem","A-simd","A-ffi"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":2696,"filename":"2696-debug-map-key-value.md","start_date":"2019-05-01","feature_name":["debug_map_key_value"],"issues":["[rust-lang/rust#62482](https://github.com/rust-lang/rust/issues/62482)"],"title":null,"teams":["Libs"],"tags":[]}
+{"version":1,"number":2696,"filename":"2696-debug-map-key-value.md","start_date":"2019-05-01","feature_name":["debug_map_key_value"],"issues":["[rust-lang/rust#62482](https://github.com/rust-lang/rust/issues/62482)"],"title":null,"teams":["Libs"],"tags":["A-fmt"]}

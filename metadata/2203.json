@@ -1,1 +1,1 @@
-{"version":1,"number":2203,"filename":"2203-const-repeat-expr.md","start_date":"2017-10-20","feature_name":["const_repeat_expr"],"issues":["[rust-lang/rust#49147](https://github.com/rust-lang/rust/issues/49147)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2203,"filename":"2203-const-repeat-expr.md","start_date":"2017-10-20","feature_name":["const_repeat_expr"],"issues":["[rust-lang/rust#49147](https://github.com/rust-lang/rust/issues/49147)"],"title":null,"teams":["Lang"],"tags":["A-typesystem","A-expressions","A-array","A-const-eval"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":2057,"filename":"2057-refcell-replace.md","start_date":"2017-06-09","feature_name":["refcell-replace"],"issues":["[rust-lang/rust#43570](https://github.com/rust-lang/rust/issues/43570)"],"title":null,"teams":["Libs"],"tags":[]}
+{"version":1,"number":2057,"filename":"2057-refcell-replace.md","start_date":"2017-06-09","feature_name":["refcell-replace"],"issues":["[rust-lang/rust#43570](https://github.com/rust-lang/rust/issues/43570)"],"title":null,"teams":["Libs"],"tags":["A-cell"]}

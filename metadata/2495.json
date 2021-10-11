@@ -1,1 +1,1 @@
-{"version":1,"number":2495,"filename":"2495-min-rust-version.md","start_date":"2018-06-28","feature_name":["min_rust_version"],"issues":["[rust-lang/rust#65262](https://github.com/rust-lang/rust/issues/65262)"],"title":null,"teams":["Tools"],"tags":[]}
+{"version":1,"number":2495,"filename":"2495-min-rust-version.md","start_date":"2018-06-28","feature_name":["min_rust_version"],"issues":["[rust-lang/rust#65262](https://github.com/rust-lang/rust/issues/65262)"],"title":null,"teams":["Tools"],"tags":["T-cargo","A-versioning"]}

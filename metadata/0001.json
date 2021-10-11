@@ -1,1 +1,1 @@
-{"version":1,"number":1,"filename":"0001-private-fields.md","start_date":"2014-03-11","feature_name":[],"issues":["[rust-lang/rust#8122](https://github.com/rust-lang/rust/issues/8122)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":1,"filename":"0001-private-fields.md","start_date":"2014-03-11","feature_name":[],"issues":["[rust-lang/rust#8122](https://github.com/rust-lang/rust/issues/8122)"],"title":null,"teams":[],"tags":["A-data-types","A-typesystem","A-privacy","A-product-types"]}

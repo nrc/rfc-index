@@ -1,1 +1,1 @@
-{"version":1,"number":2093,"filename":"2093-infer-outlives.md","start_date":"2017-08-02","feature_name":["infer_outlives"],"issues":["[rust-lang/rust#44493](https://github.com/rust-lang/rust/issues/44493)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2093,"filename":"2093-infer-outlives.md","start_date":"2017-08-02","feature_name":["infer_outlives"],"issues":["[rust-lang/rust#44493](https://github.com/rust-lang/rust/issues/44493)"],"title":null,"teams":["Lang"],"tags":["A-typesystem","A-inference","A-borrowck"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":2388,"filename":"2388-try-expr.md","start_date":"2018-04-04","feature_name":["try_expr"],"issues":["[rust-lang/rust#50412](https://github.com/rust-lang/rust/issues/50412)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2388,"filename":"2388-try-expr.md","start_date":"2018-04-04","feature_name":["try_expr"],"issues":["[rust-lang/rust#50412](https://github.com/rust-lang/rust/issues/50412)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-error-handling","A-keyword"]}

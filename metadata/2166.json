@@ -1,1 +1,1 @@
-{"version":1,"number":2166,"filename":"2166-impl-only-use.md","start_date":"2017-10-01","feature_name":["impl-only-use"],"issues":["[rust-lang/rust#48216](https://github.com/rust-lang/rust/issues/48216)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2166,"filename":"2166-impl-only-use.md","start_date":"2017-10-01","feature_name":["impl-only-use"],"issues":["[rust-lang/rust#48216](https://github.com/rust-lang/rust/issues/48216)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-resolve"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":1066,"filename":"1066-safe-mem-forget.md","start_date":"2015-04-15","feature_name":[],"issues":["[rust-lang/rust#25186](https://github.com/rust-lang/rust/issues/25186)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":1066,"filename":"1066-safe-mem-forget.md","start_date":"2015-04-15","feature_name":[],"issues":["[rust-lang/rust#25186](https://github.com/rust-lang/rust/issues/25186)"],"title":null,"teams":[],"tags":["A-unsafe","A-typesystem","A-machine"]}

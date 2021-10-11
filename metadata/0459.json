@@ -1,1 +1,1 @@
-{"version":1,"number":459,"filename":"0459-disallow-shadowing.md","start_date":"2014-11-29","feature_name":[],"issues":["[rust-lang/rust#19390](https://github.com/rust-lang/rust/issues/19390)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":459,"filename":"0459-disallow-shadowing.md","start_date":"2014-11-29","feature_name":[],"issues":["[rust-lang/rust#19390](https://github.com/rust-lang/rust/issues/19390)"],"title":null,"teams":[],"tags":["A-typesystem","A-lifetimes"]}

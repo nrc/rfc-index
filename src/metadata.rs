@@ -190,7 +190,17 @@ pub fn metadata_exists(number: u64) -> Result<()> {
 pub fn all_metadata() -> Result<Vec<RfcMetadata>> {
     fs::read_dir(METADATA_DIR)?
         .filter_map(|e| e.ok())
-        .filter(|e| !e.file_type().unwrap().is_dir())
+        .filter(|e| {
+            !e.file_type().unwrap().is_dir()
+                && e.file_name()
+                    .into_string()
+                    .unwrap()
+                    .split('.')
+                    .next()
+                    .unwrap()
+                    .parse::<u64>()
+                    .is_ok()
+        })
         .map(|e| read_metadata(&e.path()))
         .collect()
 }
@@ -199,7 +209,7 @@ pub fn all_metadata_numbers() -> Result<Vec<u64>> {
     Ok(fs::read_dir(METADATA_DIR)?
         .filter_map(|e| e.ok())
         .filter(|e| !e.file_type().unwrap().is_dir())
-        .map(|e| {
+        .filter_map(|e| {
             e.file_name()
                 .into_string()
                 .unwrap()
@@ -207,7 +217,7 @@ pub fn all_metadata_numbers() -> Result<Vec<u64>> {
                 .next()
                 .unwrap()
                 .parse()
-                .unwrap()
+                .ok()
         })
         .collect())
 }

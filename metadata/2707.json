@@ -1,1 +1,1 @@
-{"version":1,"number":2707,"filename":"2707-dotdot-patterns.md","start_date":"2019-06-01","feature_name":["dotdot_patterns"],"issues":["[rust-lang/rust#62254](https://github.com/rust-lang/rust/issues/62254)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2707,"filename":"2707-dotdot-patterns.md","start_date":"2019-06-01","feature_name":["dotdot_patterns"],"issues":["[rust-lang/rust#62254](https://github.com/rust-lang/rust/issues/62254)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-patterns"]}

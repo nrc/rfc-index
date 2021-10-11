@@ -1,1 +1,1 @@
-{"version":1,"number":771,"filename":"0771-std-iter-once.md","start_date":"2015-1-30","feature_name":[],"issues":["[rust-lang/rust#24443](https://github.com/rust-lang/rust/issues/24443)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":771,"filename":"0771-std-iter-once.md","start_date":"2015-1-30","feature_name":[],"issues":["[rust-lang/rust#24443](https://github.com/rust-lang/rust/issues/24443)"],"title":null,"teams":[],"tags":["A-types-libstd","A-iterators"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":2476,"filename":"2476-clippy-uno.md","start_date":"2018-06-14","feature_name":["clippy_uno"],"issues":["[rust-lang-nursery/rust-clippy#54881](https://github.com/rust-lang-nursery/rust-clippy/issues/3343)"],"title":null,"teams":["Tools"],"tags":[]}
+{"version":1,"number":2476,"filename":"2476-clippy-uno.md","start_date":"2018-06-14","feature_name":["clippy_uno"],"issues":["[rust-lang-nursery/rust-clippy#54881](https://github.com/rust-lang-nursery/rust-clippy/issues/3343)"],"title":null,"teams":["Tools"],"tags":["A-lint"]}

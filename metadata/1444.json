@@ -1,1 +1,1 @@
-{"version":1,"number":1444,"filename":"1444-union.md","start_date":"2015-12-29","feature_name":["union"],"issues":["[rust-lang/rust#32836](https://github.com/rust-lang/rust/issues/32836)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":1444,"filename":"1444-union.md","start_date":"2015-12-29","feature_name":["union"],"issues":["[rust-lang/rust#32836](https://github.com/rust-lang/rust/issues/32836)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-typesystem","A-machine","A-unions"]}

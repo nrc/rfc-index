@@ -1,1 +1,1 @@
-{"version":1,"number":2397,"filename":"2397-do-not-recommend.md","start_date":"2018-04-07","feature_name":["do_not_recommend"],"issues":["[rust-lang/rust#51992](https://github.com/rust-lang/rust/issues/51992)"],"title":null,"teams":["Lang","Compiler"],"tags":[]}
+{"version":1,"number":2397,"filename":"2397-do-not-recommend.md","start_date":"2018-04-07","feature_name":["do_not_recommend"],"issues":["[rust-lang/rust#51992](https://github.com/rust-lang/rust/issues/51992)"],"title":null,"teams":["Lang","Compiler"],"tags":["A-attributes","A-diagnostics"]}

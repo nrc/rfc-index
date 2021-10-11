@@ -1,1 +1,1 @@
-{"version":1,"number":1135,"filename":"1135-raw-pointer-comparisons.md","start_date":"2015-05-27","feature_name":["raw-pointer-comparisons"],"issues":["[rust-lang/rust#28235](https://github.com/rust-lang/rust/issues/28236)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":1135,"filename":"1135-raw-pointer-comparisons.md","start_date":"2015-05-27","feature_name":["raw-pointer-comparisons"],"issues":["[rust-lang/rust#28235](https://github.com/rust-lang/rust/issues/28236)"],"title":null,"teams":["Lang"],"tags":["A-raw-pointers"]}
