@@ -617,6 +617,7 @@ fn tag(
                     *t = to.to_owned();
                 }
             }
+            metadata.tags.dedup();
         }
 
         if let Some(scan) = scan {

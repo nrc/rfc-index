@@ -1,1 +1,1 @@
-{"version":1,"number":1581,"filename":"1581-fused-iterator.md","start_date":"2016-04-15","feature_name":["fused"],"issues":["[rust-lang/rust#35602](https://github.com/rust-lang/rust/issues/35602)"],"title":null,"teams":["Libs"],"tags":["A-traits-libstd","A-iterators","A-specialization"]}
+{"version":1,"number":1581,"filename":"1581-fused-iterator.md","start_date":"2016-04-15","feature_name":["fused"],"issues":["[rust-lang/rust#35602](https://github.com/rust-lang/rust/issues/35602)"],"title":null,"teams":["Libs"],"tags":["A-traits","A-iterators","A-specialization"]}

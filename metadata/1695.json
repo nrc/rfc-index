@@ -1,1 +1,1 @@
-{"version":1,"number":1695,"filename":"1695-add-error-macro.md","start_date":"2016-08-01","feature_name":["compile\\_error\\_macro"],"issues":["[rust-lang/rust#40872](https://github.com/rust-lang/rust/issues/40872)"],"title":null,"teams":["Libs"],"tags":["A-macros-libstd","A-diagnostics"]}
+{"version":1,"number":1695,"filename":"1695-add-error-macro.md","start_date":"2016-08-01","feature_name":["compile\\_error\\_macro"],"issues":["[rust-lang/rust#40872](https://github.com/rust-lang/rust/issues/40872)"],"title":null,"teams":["Libs"],"tags":["A-macros","A-diagnostics"]}

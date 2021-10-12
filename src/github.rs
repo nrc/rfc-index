@@ -243,8 +243,6 @@ pub fn update_from_pr(
                             metadata.teams.push(team);
                         }
                     }
-
-                    // TODO if no team, try and infer it from tags
                 }
 
                 if opts.tags {

@@ -1,1 +1,1 @@
-{"version":1,"number":1542,"filename":"1542-try-from.md","start_date":"2016-03-10","feature_name":["try_from"],"issues":["[rust-lang/rfcs#33147](https://github.com/rust-lang/rust/issues/33417)"],"title":null,"teams":["Libs"],"tags":["A-traits-libstd","A-conversions"]}
+{"version":1,"number":1542,"filename":"1542-try-from.md","start_date":"2016-03-10","feature_name":["try_from"],"issues":["[rust-lang/rfcs#33147](https://github.com/rust-lang/rust/issues/33417)"],"title":null,"teams":["Libs"],"tags":["A-traits","A-conversions"]}
