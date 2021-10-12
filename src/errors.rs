@@ -29,7 +29,8 @@ pub enum Error {
 }
 
 impl From<serde_json::Error> for Error {
-    fn from(_: serde_json::Error) -> Error {
+    fn from(e: serde_json::Error) -> Error {
+        dbg!(&e);
         Error::Serialization
     }
 }
