@@ -221,3 +221,36 @@ pub fn all_metadata_numbers() -> Result<Vec<u64>> {
         })
         .collect())
 }
+
+/// Attempt to infer a team from the tags. Does not save the updated metadata to disk.
+pub fn infer_team_from_tags(metadata: &mut RfcMetadata, tag_metadata: &TagMetadata) -> Result<()> {
+    if !metadata.teams.is_empty() || metadata.tags.is_empty() {
+        return Ok(());
+    }
+
+    let mut teams = HashMap::new();
+    for t in &metadata.tags {
+        for team in &tag_metadata.by_tag[t] {
+            *teams.entry(*team).or_insert_with(|| 0) += 1;
+        }
+    }
+
+    let teams: Vec<_> = teams
+        .into_iter()
+        .filter_map(|(t, s)| if s > 1 { Some(t) } else { None })
+        .collect();
+    if teams.len() == 1 {
+        metadata.teams = teams;
+    } else if teams.len() > 1 {
+        eprintln!("Multiple teams for {}: {:?}", metadata.filename, teams);
+    }
+    // for (t, s) in teams {
+    //     if s > 2 {
+    //         metadata.teams.push(t);
+    //     } else if s > 1 {
+    //         eprintln!("Weak inference for {}: {:?}", metadata.filename, t);
+    //     }
+    // }
+
+    Ok(())
+}

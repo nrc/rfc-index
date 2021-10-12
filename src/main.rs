@@ -2,8 +2,8 @@ use crate::{
     errors::{Error, Result},
     github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr, UpdateOptions},
     metadata::{
-        all_metadata, all_metadata_numbers, delete_metadata, metadata_exists, open_metadata,
-        read_tag_metadata, save_metadata, write_tag_metadata, RfcMetadata,
+        all_metadata, all_metadata_numbers, delete_metadata, infer_team_from_tags, metadata_exists,
+        open_metadata, read_tag_metadata, save_metadata, write_tag_metadata, RfcMetadata,
     },
 };
 use std::{process, str::FromStr};
@@ -53,7 +53,8 @@ fn main() {
             init,
             remove,
             replace,
-        } => run_tag(numbers, add, scan, init, remove, replace),
+            infer_team,
+        } => run_tag(numbers, add, scan, init, remove, replace, infer_team),
         Command::Migrate => run_migrate(),
     }
 }
@@ -134,6 +135,9 @@ enum Command {
         /// Replace a tag from the specified RFCs, use syntax: `old_name/new_name`.
         #[structopt(long)]
         replace: Option<String>,
+        /// Attempt to infer the team from the tags for the specified RFCs.
+        #[structopt(long)]
+        infer_team: bool,
     },
     /// Migrate metadata between versions.
     Migrate,
@@ -546,8 +550,9 @@ fn run_tag(
     init: bool,
     remove: Option<String>,
     replace: Option<String>,
+    infer_team: bool,
 ) {
-    match tag(numbers, add, scan, init, remove, replace) {
+    match tag(numbers, add, scan, init, remove, replace, infer_team) {
         Err(e) => {
             eprintln!("Error: {:?}", e);
             process::exit(ExitCode::Other as i32);
@@ -563,6 +568,7 @@ fn tag(
     init: bool,
     remove: Option<String>,
     replace: Option<String>,
+    infer_team: bool,
 ) -> Result<()> {
     if init {
         return tag_init();
@@ -574,7 +580,7 @@ fn tag(
 
     let scan = scan.map(|s| s.unwrap_or_default());
 
-    let tag_metadata = if scan.is_some() {
+    let tag_metadata = if scan.is_some() || infer_team {
         Some(read_tag_metadata()?)
     } else {
         None
@@ -620,6 +626,10 @@ fn tag(
             };
 
             update_from_pr(&mut metadata, tag_metadata.as_ref().unwrap(), opts)?;
+        }
+
+        if infer_team {
+            infer_team_from_tags(&mut metadata, tag_metadata.as_ref().unwrap())?;
         }
 
         save_metadata(&metadata)?;
