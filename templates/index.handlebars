@@ -16,14 +16,14 @@
       <p class="blurb">The canonical record of RFCs is the <a href="https://github.com/rust-lang/rfcs" target="_blank">RFC repo</a>. You might also want to browse the <a href="https://rust-lang.github.io/rfcs" target="_blank">RFC book</a>. The source code and metadata for this website is open source and developed on <a href="https://github.com/nrc/rfc-index" target="_blank">GitHub</a>.</p>
       <div class="column-container">
         <div class="column-box categories">
-          <a href="#"  onclick="showAll(); return false;" id="all" class="category tier-0 selected">all</a>
+          <a href="#"  onclick="showAll(); return false;" id="all" class="category tier-0 selected">all (<span id="all-count"></span>)</a>
           {{#each teams}}
-          <a href="#" onclick="showTeam(this); return false;" id="{{name}}" class="category tier-1">{{name}}</a>
+          <a href="#" onclick="showTeam(this); return false;" id="{{name}}" class="category tier-1">{{name}} (<span id="{{name}}-count"></span>)</a>
             {{#each tags}}
-            <a href="#" onclick="showTag(this); return false;" id="{{../name}}-{{this}}" class="category tier-2">{{this}}</a>
+            <a href="#" onclick="showTag(this); return false;" id="{{../name}}-{{this}}" class="category tier-2">{{this}} (<span id="{{../name}}-{{this}}-count"></span>)</a>
             {{/each}}
           {{/each}}
-          <a href="#" onclick="showTeam(this); return false;" id="unclassified" class="category tier-1">unclassified</a>
+          <a href="#" onclick="showTeam(this); return false;" id="unclassified" class="category tier-1">unclassified (<span id="unclassified-count"></span>)</a>
         </div>
         <div class="column-box rfcs">
           <ul class="rfc-list" id="rfc-list">
@@ -42,6 +42,7 @@
   ];
 
   showAll();
+  initCounts();
 
   function reset() {
     // unhighlight and hide tags
@@ -136,6 +137,46 @@
         list.appendChild(li)
       }
     }
+  }
+
+  function initCounts() {
+    // All.
+    let all = document.getElementById('all-count');
+    all.innerHTML = data.length;
+
+    // Unclassified.
+    let count = 0;
+    for (const rfc of data) {
+      if (rfc.teams.length == 0) {
+        count += 1;
+      }
+    }
+    let unclassified = document.getElementById('unclassified-count');
+    unclassified.innerHTML = count;
+
+    let team;
+    let tag;
+    {{#each teams}}
+      count = 0;
+      for (const rfc of data) {
+        if (rfc.teams.includes("{{name}}")) {
+          count += 1;
+        }
+      }
+      team = document.getElementById('{{name}}-count');
+      team.innerHTML = count;
+
+      {{#each tags}}
+        count = 0;
+        for (const rfc of data) {
+          if (rfc.teams.includes("{{../name}}") && rfc.tags.includes("{{this}}")) {
+            count += 1;
+          }
+        }
+        tag = document.getElementById('{{../name}}-{{this}}-count');
+        tag.innerHTML = count;
+      {{/each}}
+    {{/each}}
   }
 </script>
 </html>
