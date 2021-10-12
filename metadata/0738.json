@@ -1,1 +1,1 @@
-{"version":1,"number":738,"filename":"0738-variance.md","start_date":"2014-12-19","feature_name":[],"issues":["[rust-lang/rust#22212](https://github.com/rust-lang/rust/issues/22212)"],"title":null,"teams":[],"tags":["A-variance","A-typesystem","A-drop"]}
+{"version":1,"number":738,"filename":"0738-variance.md","start_date":"2014-12-19","feature_name":[],"issues":["[rust-lang/rust#22212](https://github.com/rust-lang/rust/issues/22212)"],"title":null,"teams":["Lang"],"tags":["A-variance","A-typesystem","A-drop"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":769,"filename":"0769-sound-generic-drop.md","start_date":"2013-08-29","feature_name":[],"issues":["[rust-lang/rust#8861](https://github.com/rust-lang/rust/issues/8861)"],"title":null,"teams":[],"tags":["A-typesystem","A-machine","A-drop","A-parametricity"]}
+{"version":1,"number":769,"filename":"0769-sound-generic-drop.md","start_date":"2013-08-29","feature_name":[],"issues":["[rust-lang/rust#8861](https://github.com/rust-lang/rust/issues/8861)"],"title":null,"teams":["Lang"],"tags":["A-typesystem","A-machine","A-drop","A-parametricity"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":840,"filename":"0840-no-panic-in-c-string.md","start_date":"2015-02-13","feature_name":["non_panicky_cstring"],"issues":["[rust-lang/rust#22470](https://github.com/rust-lang/rust/issues/22470)"],"title":null,"teams":[],"tags":["A-panic","A-ffi"]}
+{"version":1,"number":840,"filename":"0840-no-panic-in-c-string.md","start_date":"2015-02-13","feature_name":["non_panicky_cstring"],"issues":["[rust-lang/rust#22470](https://github.com/rust-lang/rust/issues/22470)"],"title":null,"teams":["Lang"],"tags":["A-panic","A-ffi"]}

@@ -1,1 +1,1 @@
-{"version":1,"number":130,"filename":"0130-box-not-special.md","start_date":"2014-07-29","feature_name":[],"issues":["[rust-lang/rust#16094](https://github.com/rust-lang/rust/issues/16094)"],"title":null,"teams":[],"tags":["A-typesystem","A-borrowck","A-allocation"]}
+{"version":1,"number":130,"filename":"0130-box-not-special.md","start_date":"2014-07-29","feature_name":[],"issues":["[rust-lang/rust#16094](https://github.com/rust-lang/rust/issues/16094)"],"title":null,"teams":["Lang"],"tags":["A-typesystem","A-borrowck","A-allocation"]}

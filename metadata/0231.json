@@ -1,1 +1,1 @@
-{"version":1,"number":231,"filename":"0231-upvar-capture-inference.md","start_date":"2014-09-09","feature_name":[],"issues":["[rust-lang/rust#16640](https://github.com/rust-lang/rust/issues/16640)"],"title":null,"teams":[],"tags":["A-syntax","A-closures"]}
+{"version":1,"number":231,"filename":"0231-upvar-capture-inference.md","start_date":"2014-09-09","feature_name":[],"issues":["[rust-lang/rust#16640](https://github.com/rust-lang/rust/issues/16640)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-closures"]}

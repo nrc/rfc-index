@@ -1,1 +1,1 @@
-{"version":1,"number":179,"filename":"0179-and-mut-patterns.md","start_date":"23-07-2014","feature_name":[],"issues":["[rust-lang/rust#20496](https://github.com/rust-lang/rust/issues/20496)"],"title":null,"teams":[],"tags":["A-syntax","A-patterns","A-references"]}
+{"version":1,"number":179,"filename":"0179-and-mut-patterns.md","start_date":"23-07-2014","feature_name":[],"issues":["[rust-lang/rust#20496](https://github.com/rust-lang/rust/issues/20496)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-patterns","A-references"]}
