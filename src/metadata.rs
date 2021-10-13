@@ -78,12 +78,12 @@ impl FromStr for Team {
 
     fn from_str(s: &str) -> Result<Team> {
         match s {
-            "t-lang" => Ok(Team::Lang),
-            "t-libs" => Ok(Team::Libs),
-            "t-core" => Ok(Team::Core),
-            "t-tools" => Ok(Team::Tools),
-            "t-compiler" => Ok(Team::Compiler),
-            "t-docs" => Ok(Team::Docs),
+            "lang" => Ok(Team::Lang),
+            "libs" => Ok(Team::Libs),
+            "core" => Ok(Team::Core),
+            "tools" => Ok(Team::Tools),
+            "compiler" => Ok(Team::Compiler),
+            "docs" => Ok(Team::Docs),
             _ => Err(Error::ParseTag(s.to_owned())),
         }
     }
