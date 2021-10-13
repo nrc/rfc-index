@@ -3,7 +3,7 @@ use crate::{
     github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr, UpdateOptions},
     metadata::{
         all_metadata, all_metadata_numbers, delete_metadata, infer_team_from_tags, metadata_exists,
-        open_metadata, read_tag_metadata, save_metadata, write_tag_metadata, RfcMetadata,
+        open_metadata, read_tag_metadata, save_metadata, write_tag_metadata, RfcMetadata, Team,
     },
 };
 use std::{process, str::FromStr};
@@ -55,6 +55,12 @@ fn main() {
             replace,
             infer_team,
         } => run_tag(numbers, add, scan, init, remove, replace, infer_team),
+        Command::Team {
+            numbers,
+            add,
+            remove,
+            replace,
+        } => run_team(numbers, add, remove, replace),
         Command::Migrate => run_migrate(),
     }
 }
@@ -138,6 +144,20 @@ enum Command {
         /// Attempt to infer the team from the tags for the specified RFCs.
         #[structopt(long)]
         infer_team: bool,
+    },
+    /// Set/update teams on metadata (see also `tag` command for some operations on teams and tags)
+    Team {
+        /// Specify RFCs to update, uses all known RFCs if none are specified.
+        numbers: Vec<u64>,
+        /// Add a team to the RFCs.
+        #[structopt(long)]
+        add: Option<String>,
+        /// Remove a team from the specified RFCs.
+        #[structopt(long)]
+        remove: Option<String>,
+        /// Replace a team from the specified RFCs, use syntax: `old_name/new_name`.
+        #[structopt(long)]
+        replace: Option<String>,
     },
     /// Migrate metadata between versions.
     Migrate,
@@ -645,6 +665,78 @@ fn tag(
 fn tag_init() -> Result<()> {
     let data = init_tag_metadata()?;
     write_tag_metadata(data)
+}
+
+fn run_team(
+    numbers: Vec<u64>,
+    add: Option<String>,
+    remove: Option<String>,
+    replace: Option<String>,
+) {
+    match team(numbers, add, remove, replace) {
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            process::exit(ExitCode::Other as i32);
+        }
+        _ => {}
+    }
+}
+
+fn team(
+    mut numbers: Vec<u64>,
+    add: Option<String>,
+    remove: Option<String>,
+    replace: Option<String>,
+) -> Result<()> {
+    if numbers.is_empty() {
+        numbers = all_metadata_numbers()?;
+    }
+
+    // eprintln!("info: tagging {}", numbers.len());
+    for n in numbers {
+        let mut metadata = open_metadata(n)?;
+        if let Some(add) = &add {
+            let team: Team = add.parse()?;
+            if !metadata.teams.contains(&team) {
+                metadata.teams.push(team);
+            }
+        }
+
+        if let Some(remove) = &remove {
+            let team: Team = remove.parse()?;
+            metadata.teams.retain(|t| *t != team);
+        }
+
+        if let Some(replace) = &replace {
+            let mut splits = replace.split('/');
+            let from: Team = splits
+                .next()
+                .expect("No team to replace, use syntax `from/to`")
+                .parse()?;
+            let to: Team = splits
+                .next()
+                .expect("No team to replace with, use syntax `from/to`")
+                .parse()?;
+            assert!(
+                splits.next().is_none(),
+                "Too many arguments to `team --replace`"
+            );
+
+            for t in &mut metadata.teams {
+                if *t == from {
+                    *t = to;
+                }
+            }
+            metadata.teams.dedup();
+        }
+
+        save_metadata(&metadata)?;
+
+        // Progress indicator
+        eprint!(".");
+    }
+
+    Ok(())
 }
 
 fn run_migrate() {
