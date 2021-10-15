@@ -20,8 +20,9 @@
           {{#each teams}}
           <a href="#" onclick="showTeam(this); return false;" id="{{name}}" class="category tier-1">{{name}} (<span id="{{name}}-count"></span>)</a>
             {{#each tags}}
-            <a href="#" onclick="showTag(this); return false;" id="{{../name}}-{{this}}" class="category tier-2">{{this}} (<span id="{{../name}}-{{this}}-count"></span>)</a>
+              <a href="#" onclick="showTag(this); return false;" id="{{../name}}-{{this}}" class="category tier-2">{{this}} (<span id="{{../name}}-{{this}}-count"></span>)</a>
             {{/each}}
+            <a href="#" onclick="showTag(this); return false;" id="{{name}}-untagged" class="category tier-2">untagged (<span id="{{name}}-untagged-count"></span>)</a>
           {{/each}}
           <a href="#" onclick="showTeam(this); return false;" id="unclassified" class="category tier-1">unclassified (<span id="unclassified-count"></span>)</a>
         </div>
@@ -128,7 +129,7 @@
 
     // show RFCs
     for (const rfc of data) {
-      if (rfc.teams.includes(team) && rfc.tags.includes(tag)) {
+      if (rfc.teams.includes(team) && ((tag != "untagged" && rfc.tags.includes(tag)) || tag == "untagged" && rfc.tags.length == 0)) {
         let li = document.createElement('li');
         let a = document.createElement('a');
         a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
@@ -176,6 +177,15 @@
         tag = document.getElementById('{{../name}}-{{this}}-count');
         tag.innerHTML = count;
       {{/each}}
+
+      count = 0;
+      for (const rfc of data) {
+        if (rfc.teams.includes("{{name}}") && rfc.tags.length == 0) {
+          count += 1;
+        }
+      }
+      tag = document.getElementById('{{name}}-untagged-count');
+      tag.innerHTML = count;
     {{/each}}
   }
 </script>
