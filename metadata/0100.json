@@ -1,1 +1,1 @@
-{"version":1,"number":100,"filename":"0100-partial-cmp.md","start_date":"2014-06-01","feature_name":[],"issues":["[rust-lang/rust#14987](https://github.com/rust-lang/rust/issues/14987)"],"title":null,"teams":[],"tags":["A-compare"]}
+{"version":1,"number":100,"filename":"0100-partial-cmp.md","start_date":"2014-06-01","feature_name":[],"issues":["[rust-lang/rust#14987](https://github.com/rust-lang/rust/issues/14987)"],"title":null,"teams":["Libs"],"tags":["A-compare"]}
