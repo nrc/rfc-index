@@ -184,8 +184,13 @@
           count += 1;
         }
       }
-      tag = document.getElementById('{{name}}-untagged-count');
-      tag.innerHTML = count;
+      if (count == 0) {
+        tag = document.getElementById('{{name}}-untagged');
+        tag.innerHTML = '';
+      } else {
+        tag = document.getElementById('{{name}}-untagged-count');
+        tag.innerHTML = count;
+      }
     {{/each}}
   }
 </script>
