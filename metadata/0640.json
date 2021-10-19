@@ -1,1 +1,1 @@
-{"version":1,"number":640,"filename":"0640-debug-improvements.md","start_date":"2015-01-20","feature_name":[],"issues":["[rust-lang/rust#23083](https://github.com/rust-lang/rust/issues/23083)"],"title":null,"teams":[],"tags":["A-debugging","A-traits"]}
+{"version":1,"number":640,"filename":"0640-debug-improvements.md","start_date":"2015-01-20","feature_name":[],"issues":["[rust-lang/rust#23083](https://github.com/rust-lang/rust/issues/23083)"],"title":"Improve Debug trait (adds :#?)","teams":["Libs"],"tags":["A-debugging","A-traits"]}

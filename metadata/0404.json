@@ -1,1 +1,1 @@
-{"version":1,"number":404,"filename":"0404-change-prefer-dynamic.md","start_date":"2014-11-01","feature_name":[],"issues":["[#18499](https://github.com/rust-lang/rust/issues/18499)"],"title":null,"teams":[],"tags":[]}
+{"version":1,"number":404,"filename":"0404-change-prefer-dynamic.md","start_date":"2014-11-01","feature_name":[],"issues":["[#18499](https://github.com/rust-lang/rust/issues/18499)"],"title":"Prefer static linking for dynamic libraries (-Cprefer-dynamic)","teams":["Compiler"],"tags":[]}
