@@ -28,6 +28,9 @@
         </div>
         <div class="column-box rfcs">
           <ul class="rfc-list" id="rfc-list">
+            {{#each rfcs}}
+            <li id="rfc-{{number}}" class="li-rfc"><a href="{{url}}">{{number}} {{title}}</a></li>
+            {{/each}}
           </ul>
         </div>
       </div>
@@ -38,7 +41,7 @@
 <script type="text/javascript">
   let data = [
     {{#each rfcs}}
-    { url: "{{url}}", number: "{{number}}", title: "{{{title}}}", teams: [{{#each teams}}"{{this}}",{{/each}}], tags: [{{#each tags}}"{{this}}",{{/each}}] },
+    { url: "{{url}}", number: "{{number}}", teams: [{{#each teams}}"{{this}}",{{/each}}], tags: [{{#each tags}}"{{this}}",{{/each}}] },
     {{/each}}
   ];
 
@@ -58,22 +61,19 @@
       team.classList.remove("selected");
     }
     // hide RFCs
-    let list = document.getElementById('rfc-list');
-    list.innerHTML = '';
+    let rfcs = document.getElementsByClassName("li-rfc");
+    for (const rfc of rfcs) {
+      rfc.style.display = "none";
+    }
   }
 
   function showAll() {
     reset();
 
     // show all RFCs
-    let list = document.getElementById('rfc-list');
-    for (const rfc of data) {
-      let li = document.createElement('li');
-      let a = document.createElement('a');
-      a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
-      a.href = rfc.url;
-      li.appendChild(a);
-      list.appendChild(li)
+    let rfcs = document.getElementsByClassName("li-rfc");
+    for (const rfc of rfcs) {
+      rfc.style.display = "block";
     }
   }
 
@@ -86,7 +86,7 @@
     let tags = document.getElementsByClassName("tier-2");
     for (const tag of tags) {
       if (tag.id.startsWith(team)) {
-        tag.style.display = "block"
+        tag.style.display = "block";
       }
     }
 
@@ -94,12 +94,8 @@
     let list = document.getElementById('rfc-list');
     for (const rfc of data) {
       if ((team == "unclassified" && rfc.teams.length == 0) || (team != "unclassified" && rfc.teams.includes(team))) {
-        let li = document.createElement('li');
-        let a = document.createElement('a');
-        a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
-        a.href = rfc.url;
-        li.appendChild(a);
-        list.appendChild(li)
+        let li = document.getElementById('rfc-' + rfc.number);
+        li.style.display = "block";
       }
     }
 
@@ -124,18 +120,16 @@
     team_link.classList.add("selected");
 
     // hide RFCs
-    let list = document.getElementById('rfc-list');
-    list.innerHTML = '';
+    let rfcs = document.getElementsByClassName("li-rfc");
+    for (const rfc of rfcs) {
+      rfc.style.display = "none";
+    }
 
     // show RFCs
     for (const rfc of data) {
       if (rfc.teams.includes(team) && ((tag != "untagged" && rfc.tags.includes(tag)) || tag == "untagged" && rfc.tags.length == 0)) {
-        let li = document.createElement('li');
-        let a = document.createElement('a');
-        a.appendChild(document.createTextNode(rfc.number + ' ' + rfc.title));
-        a.href = rfc.url;
-        li.appendChild(a);
-        list.appendChild(li)
+        let li = document.getElementById('rfc-' + rfc.number);
+        li.style.display = "block"
       }
     }
   }
