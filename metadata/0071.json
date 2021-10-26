@@ -1,1 +1,1 @@
-{"version":1,"number":71,"filename":"0071-const-block-expr.md","start_date":"2014-05-07","feature_name":[],"issues":["[rust-lang/rust#14181](https://github.com/rust-lang/rust/issues/14181)"],"title":null,"teams":["Lang"],"tags":["A-syntax","A-machine","A-static"]}
+{"version":1,"number":71,"filename":"0071-const-block-expr.md","start_date":"2014-05-07","feature_name":[],"issues":["[rust-lang/rust#14181](https://github.com/rust-lang/rust/issues/14181)"],"title":"Allow block expressions in statics","teams":["Lang"],"tags":["A-syntax","A-machine","A-static"]}

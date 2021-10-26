@@ -1,1 +1,1 @@
-{"version":1,"number":59,"filename":"0059-remove-tilde.md","start_date":"2014-04-30","feature_name":[],"issues":["[rust-lang/rust#13885](https://github.com/rust-lang/rust/issues/13885)"],"title":null,"teams":["Lang"],"tags":["A-syntax"]}
+{"version":1,"number":59,"filename":"0059-remove-tilde.md","start_date":"2014-04-30","feature_name":[],"issues":["[rust-lang/rust#13885](https://github.com/rust-lang/rust/issues/13885)"],"title":"Remove the ~ sigil","teams":["Lang"],"tags":["A-syntax"]}
