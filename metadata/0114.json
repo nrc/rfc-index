@@ -1,1 +1,1 @@
-{"version":1,"number":114,"filename":"0114-closures.md","start_date":"2014-07-29","feature_name":[],"issues":["[rust-lang/rust#16095](https://github.com/rust-lang/rust/issues/16095)"],"title":null,"teams":["Lang"],"tags":["A-typesystem","A-borrowck","A-closures"]}
+{"version":1,"number":114,"filename":"0114-closures.md","start_date":"2014-07-29","feature_name":[],"issues":["[rust-lang/rust#16095](https://github.com/rust-lang/rust/issues/16095)"],"title":"Closure reform","teams":["Lang"],"tags":["A-typesystem","A-borrowck","A-closures"]}
