@@ -1,3 +1,5 @@
+#![feature(iter_intersperse)]
+
 use crate::{
     errors::{Error, Result},
     github::{get_merged_rfc_metadata, init_tag_metadata, update_from_pr, UpdateOptions},

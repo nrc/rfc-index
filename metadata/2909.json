@@ -1,1 +1,1 @@
-{"version":1,"number":2909,"filename":"2909-destructuring-assignment.md","start_date":"2020-04-17","feature_name":["destructuring_assignment"],"issues":["[rust-lang/rust#71126](https://github.com/rust-lang/rust/issues/71126)"],"title":null,"teams":["Lang"],"tags":[]}
+{"version":1,"number":2909,"filename":"2909-destructuring-assignment.md","start_date":"2020-04-17","feature_name":["destructuring_assignment"],"issues":["[rust-lang/rust#71126](https://github.com/rust-lang/rust/issues/71126)"],"title":"Destructuring in assignment","teams":["Lang"],"tags":[]}

@@ -1,1 +1,1 @@
-{"version":1,"number":2920,"filename":"2920-inline-const.md","start_date":"2020-04-30","feature_name":["inline_const"],"issues":["[rust-lang/rust#76001](https://github.com/rust-lang/rust/issues/76001)"],"title":null,"teams":["Lang"],"tags":["A-const","A-const-eval"]}
+{"version":1,"number":2920,"filename":"2920-inline-const.md","start_date":"2020-04-30","feature_name":["inline_const"],"issues":["[rust-lang/rust#76001](https://github.com/rust-lang/rust/issues/76001)"],"title":"Inline const blocks","teams":["Lang"],"tags":["A-const","A-const-eval"]}
