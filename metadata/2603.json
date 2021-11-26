@@ -1,1 +1,1 @@
-{"version":1,"number":2603,"filename":"2603-rust-symbol-name-mangling-v0.md","start_date":"2018-11-27","feature_name":[],"issues":["[rust-lang/rust#60705](https://github.com/rust-lang/rust/issues/60705)"],"title":null,"teams":["Compiler"],"tags":["A-linkage"]}
+{"version":1,"number":2603,"filename":"2603-rust-symbol-name-mangling-v0.md","start_date":"2018-11-27","feature_name":[],"issues":["[rust-lang/rust#60705](https://github.com/rust-lang/rust/issues/60705)"],"title":"Name mangling reform","teams":["Compiler"],"tags":["A-linkage"]}
