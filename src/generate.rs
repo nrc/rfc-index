@@ -66,11 +66,15 @@ pub fn generate() -> Result<()> {
 
         // RFC pages
         let rfc_text = render_markdown(&rfc.text, false);
+        let teams: Vec<_> = metadata.teams.iter().map(|t| t.to_string()).collect();
+        let tags: Vec<_> = metadata.tags.iter().map(trim_prefix).collect();
         let html = handlebars.render(
             "rfc",
             &RfcTemplateData {
                 number: number.clone(),
                 title: title.clone(),
+                teams: teams.join(" | "),
+                tags: tags.join(" | "),
                 rfc_text,
             },
         )?;
@@ -84,8 +88,8 @@ pub fn generate() -> Result<()> {
             number,
             title,
             url,
-            teams: metadata.teams.iter().map(|t| t.to_string()).collect(),
-            tags: metadata.tags.iter().map(trim_prefix).collect(),
+            teams,
+            tags,
         };
         rfcs.push(element);
     }
@@ -165,5 +169,7 @@ struct IndexElement {
 struct RfcTemplateData {
     number: String,
     title: String,
+    teams: String,
+    tags: String,
     rfc_text: String,
 }
