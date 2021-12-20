@@ -1,1 +1,1 @@
-{"version":1,"number":2509,"filename":"2509-byte-concat.md","start_date":"2018-07-31","feature_name":["concat_bytes"],"issues":["[#87555](https://github.com/rust-lang/rust/issues/87555)"],"title":null,"teams":["Libs"],"tags":["A-macros"]}
+{"version":1,"number":2509,"filename":"2509-byte-concat.md","start_date":"2018-07-31","feature_name":["concat_bytes"],"issues":["[#87555](https://github.com/rust-lang/rust/issues/87555)"],"title":"concat_bytes macro","teams":["Libs"],"tags":["A-macros"]}
