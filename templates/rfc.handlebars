@@ -17,6 +17,14 @@
       {{{rfc_text}}}
     </div>
   </div>
-  <div class="footer">Copyright 2021 Nick Cameron and the RFC authors.</div>
+  <div class="footer">Copyright 2022 Nick Cameron and the RFC authors.</div>
 </body>
+<script>
+  let url = window.location.href;
+  if (url.endsWith('html')) {
+    let newUrl = url.substring(0, url.length - 5);
+    // Note that this will fail with a security error when testing locally with file:// URLs.
+    window.history.replaceState('', '', newUrl);
+  }
+</script>
 </html>
